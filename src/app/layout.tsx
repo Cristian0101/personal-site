@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const geistPixel = localFont({
+  src: "../../public/fonts/GeistPixelSquare.woff2",
+  variable: "--font-geist-pixel",
+  display: "swap",
+  weight: "500",
 });
 
 export const metadata: Metadata = {
-  title: 'Cristian Sanchez-Aguilera',
-  description: 'Founder, builder, and go-to-market operator based in New York.',
+  title: "Cristian Sanchez-Aguilera",
+  description: "Founder, builder, and go-to-market operator based in New York.",
 };
 
 export default function RootLayout({
@@ -24,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistPixel.variable} antialiased`}>
         {children}
       </body>
     </html>
