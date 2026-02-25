@@ -1,87 +1,81 @@
 "use client";
 
-import { posts } from "@/lib/posts";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.04 } },
-};
+import { ArrowLeft } from "@phosphor-icons/react";
+import { posts } from "@/lib/posts";
 
 export default function BlogPage() {
   return (
-    <main className={`${GeistSans.variable} ${GeistMono.variable} min-h-screen bg-[var(--bg)] px-6 py-20`}>
-      <div className="max-w-[560px] md:max-w-[780px] mx-auto">
+    <main className="min-h-screen px-6 py-20 md:py-32">
+      <div className="mx-auto max-w-[560px] md:max-w-[780px]">
         <motion.div
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] hover:text-[var(--text)] transition-colors duration-200 mb-14"
+            className="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors mb-16"
           >
-            <ArrowLeft size={12} />
+            <ArrowLeft size={16} />
             Back
           </Link>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-14"
         >
-          <p className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--muted)] font-[family-name:var(--font-geist-sans)] mb-3">
+          <p className="text-xs tracking-[0.2em] uppercase text-[var(--color-muted)] mb-4 font-mono">
             Writing
           </p>
-          <h1 className="font-[family-name:var(--font-geist-mono)] text-3xl md:text-4xl font-normal text-[var(--text)] leading-tight mb-3">
-            Essays &amp; Build-in-Public
+          <h1 className="text-4xl md:text-5xl font-mono font-normal tracking-tight mb-4">
+            Essays & Build-in-Public
           </h1>
-          <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.7]">
+          <p className="text-[var(--color-muted)] text-lg mb-16">
             Raw notes from building a YC-target SaaS as a solo founder.
           </p>
         </motion.div>
 
-        <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-0">
-          {posts.map((post) => (
-            <motion.div key={post.slug} variants={fadeUp} whileHover={{ x: 4 }} transition={{ duration: 0.15 }}>
-              <Link
-                href={`/blog/${post.slug}`}
-                className="group flex items-start justify-between gap-4 py-5 border-b border-[var(--border)]"
-              >
-                <div>
-                  <p className="text-sm font-medium text-[var(--muted)] font-[family-name:var(--font-geist-mono)] mb-1 leading-snug group-hover:text-[var(--text)] transition-colors duration-200">
-                    {post.title}
-                  </p>
-                  <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.7] group-hover:text-[var(--text)] transition-colors duration-200">
-                    {post.description}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 mt-0.5 shrink-0">
-                  <span className="text-[10px] text-[var(--muted)] whitespace-nowrap">{post.date}</span>
-                  <ArrowUpRight
-                    size={12}
-                    className="text-[var(--muted)] opacity-0 group-hover:opacity-100 group-hover:text-[var(--text)] transition-all duration-200"
-                  />
+        <div className="space-y-0">
+          {posts.map((post, index) => (
+            <motion.div
+              key={post.slug}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
+            >
+              <Link href={`/blog/${post.slug}`} className="group block">
+                <div className="flex items-baseline justify-between py-6 border-b border-[var(--color-border)]">
+                  <div className="flex-1 mr-8">
+                    <h2 className="font-mono text-lg text-[var(--color-text)] group-hover:text-emerald-500 transition-colors duration-200 group-hover:translate-x-1 transform">
+                      {post.title}
+                    </h2>
+                    <p className="text-sm text-[var(--color-muted)] mt-1">
+                      {post.subtitle}
+                    </p>
+                  </div>
+                  <span className="text-sm text-[var(--color-muted)] whitespace-nowrap font-mono">
+                    {post.date}
+                  </span>
                 </div>
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        <p className="mt-16 text-[11px] text-[var(--muted)] font-[family-name:var(--font-geist-sans)] tracking-wide">
-          © 2026 Cristian Sanchez-Aguilera
-        </p>
+        <motion.footer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-24 pt-8 border-t border-[var(--color-border)]"
+        >
+          <p className="text-sm text-[var(--color-muted)]">
+            &copy; 2026 Cristian Sanchez-Aguilera
+          </p>
+        </motion.footer>
       </div>
     </main>
   );

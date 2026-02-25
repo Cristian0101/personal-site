@@ -1,41 +1,44 @@
-import { getPost, posts } from "@/lib/posts";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { GeistPixelGrid } from "geist/font/pixel";
+import { getPostBySlug, getAllSlugs } from "@/lib/posts";
+import BlogPostContent from "./BlogPostContent";
+import type { Metadata } from "next";
 
-export function generateStaticParams() {
-  return posts.map((p) => ({ slug: p.slug }));
+interface PageProps {
+  params: Promise<{ slug: string }>;
 }
 
-type BlogPostProps = {
-  params: Promise<{ slug: string }>;
-};
+export async function generateStaticParams() {
+  return getAllSlugs().map((slug) => ({ slug }));
+}
 
-export default async function BlogPost({ params }: BlogPostProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = getPostBySlug(slug);
+  if (!post) return { title: "Post Not Found" };
 
-  if (!post) notFound();
+  return {
+    title: `${post.title} - Cristian Sanchez-Aguilera`,
+    description: post.subtitle,
+    openGraph: {
+      title: post.title,
+      description: post.subtitle,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.subtitle,
+    },
+  };
+}
 
-  return (
-    <main className={`${GeistPixelGrid.variable} min-h-screen bg-[var(--bg)] px-6 py-20`}>
-      <div className="max-w-[560px] md:max-w-[680px] mx-auto">
-        <Link
-          href="/"
-          className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)] hover:text-[var(--text)] transition-colors mb-12 inline-block"
-        >
-          ← Back
-        </Link>
-        <p className="text-[10px] tracking-[0.14em] uppercase text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)] mb-3">
-          {post.date}
-        </p>
-        <h1 className="font-[family-name:var(--font-geist-pixel-grid)] text-3xl md:text-4xl font-normal text-[var(--text)] mb-8 leading-tight">
-          {post.title}
-        </h1>
-        <div className="prose prose-neutral dark:prose-invert max-w-none font-[family-name:var(--font-geist-pixel-grid)] text-[var(--muted)] leading-[1.9] text-sm">
-          {post.content}
-        </div>
-      </div>
-    </main>
-  );
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  return <BlogPostContent post={post} />;
 }
