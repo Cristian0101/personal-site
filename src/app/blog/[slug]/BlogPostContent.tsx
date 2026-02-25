@@ -20,7 +20,7 @@ function renderInlineFormatting(text: string) {
   });
 }
 
-function ContentBlock({ block, index }: { block: string; index: number }) {
+function ContentBlock({ block }: { block: string }) {
   const trimmed = block.trim();
 
   // Section divider
@@ -177,7 +177,7 @@ export default function BlogPostContent({ post }: { post: BlogPost }) {
         {/* Content */}
         <article>
           {blocks.map((block, index) => (
-            <ContentBlock key={index} block={block} index={index} />
+            <ContentBlock key={index} block={block} />
           ))}
         </article>
 

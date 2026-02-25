@@ -35,7 +35,7 @@ export default function BlogPage() {
             Essays & Build-in-Public
           </h1>
           <p className="text-[var(--color-muted)] text-lg mb-16">
-            Raw notes from building a YC-target SaaS as a solo founder.
+            Raw notes from building a SaaS as a solo founder.
           </p>
         </motion.div>
 

@@ -6,9 +6,12 @@ html { scroll-behavior: smooth; }
   --bg: #FAFAF8;
   --bg-card: #FFFFFF;
   --text: #1C1917;
-  --muted: #78716C;
+  --muted: #5F5A55;
   --border: #E7E5E4;
   --badge: #F5F5F4;
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
 }
 
 .dark {

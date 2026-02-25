@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Cristian Sanchez-Aguilera",
   description:
-    "Founder of Syntri AI. 20-year-old solo builder racing to YC Summer 2026.",
+    "Founder of Syntri AI. 20-year-old solo builder shipping in public.",
   openGraph: {
     title: "Cristian Sanchez-Aguilera",
     description:

@@ -77,7 +77,7 @@ export default function RulesPage() {
           <h1 className="font-[family-name:var(--font-geist-mono)] text-3xl md:text-4xl font-normal text-[var(--text)] leading-tight mb-3">
             29 Things I Know So Far
           </h1>
-          <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.7]">
+          <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.7]">
             Principles collected from doing, failing, and paying attention. Updated as I learn.
           </p>
         </motion.div>
@@ -96,7 +96,7 @@ export default function RulesPage() {
               <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--border)] group-hover:text-emerald-500 transition-colors duration-300 pt-0.5 select-none min-w-[24px] shrink-0">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.8] group-hover:text-[var(--text)] transition-colors duration-300">
+              <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.8] group-hover:text-[var(--text)] transition-colors duration-300">
                 {rule}
               </p>
             </motion.div>

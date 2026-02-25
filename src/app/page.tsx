@@ -12,6 +12,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  useMotionValueEvent,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -87,26 +88,23 @@ const experience = [
 ];
 
 function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme !== "light";
 
   return (
     <motion.button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
       className="fixed top-6 right-6 z-50 p-2.5 rounded-full border border-[var(--border)] bg-[var(--bg-card)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--text)] transition-all duration-200"
       whileTap={{ scale: 0.9 }}
       aria-label="Toggle theme"
     >
       <motion.div
-        key={theme}
+        key={resolvedTheme ?? "system"}
         initial={{ rotate: -90, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
-        {theme === "dark" ? (
+        {isDark ? (
           <Sun size={16} weight="light" />
         ) : (
           <Moon size={16} weight="light" />
@@ -135,6 +133,7 @@ export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const markerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const markerTrackPositionsRef = useRef<number[]>([]);
   const timelineProgress = useMotionValue(0);
   const shouldReduceMotion = useReducedMotion();
   const smoothTimelineProgress = useSpring(timelineProgress, {
@@ -150,6 +149,26 @@ export default function Home() {
     (value) => `${value * 100}%`
   );
 
+  useMotionValueEvent(renderedTimelineProgress, "change", (latestProgress) => {
+    const markerTrackPositions = markerTrackPositionsRef.current;
+    if (markerTrackPositions.length === 0) return;
+
+    const progressEpsilon = 0.001;
+    let passedIndex = 0;
+
+    for (let index = 0; index < markerTrackPositions.length; index += 1) {
+      if (latestProgress + progressEpsilon >= markerTrackPositions[index]) {
+        passedIndex = index;
+      } else {
+        break;
+      }
+    }
+
+    setActiveIndex((previousIndex) =>
+      previousIndex === passedIndex ? previousIndex : passedIndex
+    );
+  });
+
   useEffect(() => {
     let frameId: number | null = null;
     let timeoutId: number | null = null;
@@ -162,61 +181,53 @@ export default function Home() {
         .map((marker) => {
           if (!marker) return null;
           const rect = marker.getBoundingClientRect();
-          return rect.top + rect.height / 2;
+          return window.scrollY + rect.top + rect.height / 2;
         })
         .filter((center): center is number => center !== null);
 
       if (!track || markers.length === 0) {
+        markerTrackPositionsRef.current = [];
         timelineProgress.set(0);
         setActiveIndex(0);
         return;
       }
 
+      const trackRect = track.getBoundingClientRect();
+      const trackTop = window.scrollY + trackRect.top;
+      const trackHeight = trackRect.height;
+
+      const markerTrackPositions = markers.map((center) => {
+        if (trackHeight <= 0) return 0;
+        const ratio = (center - trackTop) / trackHeight;
+        return Math.min(Math.max(ratio, 0), 1);
+      });
+      markerTrackPositionsRef.current = markerTrackPositions;
+
       if (markers.length === 1) {
-        timelineProgress.set(0);
+        timelineProgress.set(markerTrackPositions[0] ?? 0);
         setActiveIndex(0);
         return;
       }
 
       const firstCenter = markers[0];
       const lastCenter = markers[markers.length - 1];
-      const viewportAnchor = window.innerHeight * 0.35;
-      const atPageBottom =
-        window.scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - 1;
-
-      const targetCenter = atPageBottom
-        ? lastCenter
-        : Math.min(Math.max(viewportAnchor, firstCenter), lastCenter);
+      const probeLine = window.scrollY + window.innerHeight * 0.35;
+      const clampedProbe = Math.min(Math.max(probeLine, firstCenter), lastCenter);
 
       const segment = lastCenter - firstCenter;
       const normalizedProgress =
-        segment <= 0 ? 0 : (targetCenter - firstCenter) / segment;
+        segment <= 0 ? 0 : (clampedProbe - firstCenter) / segment;
 
-      const trackRect = track.getBoundingClientRect();
-      const trackHeight = trackRect.height;
       const firstTrackRatio =
-        trackHeight <= 0 ? 0 : (firstCenter - trackRect.top) / trackHeight;
+        trackHeight <= 0 ? 0 : (firstCenter - trackTop) / trackHeight;
       const lastTrackRatio =
-        trackHeight <= 0 ? 0 : (lastCenter - trackRect.top) / trackHeight;
+        trackHeight <= 0 ? 0 : (lastCenter - trackTop) / trackHeight;
 
       const rawTrackProgress =
         firstTrackRatio + normalizedProgress * (lastTrackRatio - firstTrackRatio);
       const clampedTrackProgress = Math.min(Math.max(rawTrackProgress, 0), 1);
 
       timelineProgress.set(clampedTrackProgress);
-
-      const nextActiveIndex = atPageBottom
-        ? markers.length - 1
-        : markers.reduce((closestIndex, center, index, arr) => {
-            const currentDistance = Math.abs(center - targetCenter);
-            const closestDistance = Math.abs(arr[closestIndex] - targetCenter);
-            return currentDistance < closestDistance ? index : closestIndex;
-          }, 0);
-
-      setActiveIndex((previousIndex) =>
-        previousIndex === nextActiveIndex ? previousIndex : nextActiveIndex
-      );
     };
 
     const scheduleUpdate = () => {
@@ -316,7 +327,7 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="mb-12 space-y-4 text-[0.975rem] font-light leading-[1.9] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]"
+            className="mb-12 space-y-4 text-[0.975rem] font-normal leading-[1.9] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]"
           >
             <p>
               I&apos;m 20 years old, based in New York. For the past year and a half
@@ -373,7 +384,7 @@ export default function Home() {
               <p className="mb-2 text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-pixel-grid)]">
                 Syntri AI
               </p>
-              <p className="text-xs font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
+              <p className="text-xs font-normal leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                 The first agentic territory management platform for B2B sales teams.
               </p>
             </motion.a>
@@ -397,7 +408,7 @@ export default function Home() {
               <p className="mb-2 text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-pixel-grid)]">
                 BLDR
               </p>
-              <p className="text-xs font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
+              <p className="text-xs font-normal leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                 Teaching sales operators to build production SaaS with AI agents.
               </p>
             </motion.a>
@@ -480,7 +491,7 @@ export default function Home() {
                         {entry.period}
                       </span>
                     </div>
-                    <p className="text-xs md:text-sm font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
+                    <p className="text-xs md:text-sm font-normal leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                       {entry.description}
                     </p>
                   </motion.div>
@@ -522,8 +533,8 @@ export default function Home() {
                 <p className="text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-mono)] mb-2 leading-snug">
                   Essays &amp; Build-in-Public
                 </p>
-                <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.7]">
-                  Raw notes from building a YC-target SaaS as a solo founder.
+                <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.7]">
+                  Raw notes from building a SaaS as a solo founder.
                 </p>
               </motion.a>
 
@@ -545,7 +556,7 @@ export default function Home() {
                 <p className="text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-mono)] mb-2 leading-snug">
                   29 Things I Know So Far
                 </p>
-                <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.7]">
+                <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.7]">
                   Principles collected from doing, failing, and paying attention.
                 </p>
               </motion.a>
