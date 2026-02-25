@@ -148,7 +148,7 @@ export default function Home() {
     <>
       <ThemeToggle />
       <main className="min-h-screen bg-[var(--bg)]">
-        <div className="max-w-[560px] md:max-w-[780px] mx-auto px-6 py-20 md:py-28 font-[family-name:var(--font-geist-sans)]">
+        <div className="max-w-[560px] md:max-w-[780px] mx-auto px-6 py-20 md:py-28 font-[family-name:var(--font-geist-pixel-grid)]">
           <motion.div
             variants={stagger}
             initial="hidden"
@@ -157,13 +157,13 @@ export default function Home() {
           >
             <motion.p
               variants={fadeUp}
-              className="mb-3 text-xs font-[family-name:var(--font-geist-sans)] uppercase tracking-[0.14em] text-[var(--muted)]"
+              className="mb-3 text-xs font-[family-name:var(--font-geist-pixel-grid)] uppercase tracking-[0.14em] text-[var(--muted)]"
             >
               New York · Builder · Founder
             </motion.p>
             <motion.h1
               variants={fadeUp}
-              className="mb-10 font-[family-name:var(--font-geist-mono)] text-5xl leading-[1.05] tracking-tight text-[var(--text)] md:text-6xl"
+              className="mb-10 font-[family-name:var(--font-geist-pixel-grid)] text-5xl leading-[1.05] tracking-tight text-[var(--text)] md:text-6xl"
             >
               Cristian <em className="italic">Sanchez-Aguilera</em>
             </motion.h1>
@@ -201,7 +201,7 @@ export default function Home() {
                 rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 variants={fadeUp}
                 whileHover={{ y: -2, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
-                className="link-pill inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] transition-colors duration-200 hover:border-[var(--text)] hover:text-[var(--text)]"
+                className="link-pill inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)] transition-colors duration-200 hover:border-[var(--text)] hover:text-[var(--text)]"
               >
                 {link.icon}
                 {link.label}
@@ -222,7 +222,7 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="mb-12 space-y-4 text-[0.975rem] font-light leading-[1.9] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]"
+            className="mb-12 space-y-4 text-[0.975rem] font-light leading-[1.9] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]"
           >
             <p>
               I&apos;m 20 years old, based in New York. For the past year and a half
@@ -268,18 +268,18 @@ export default function Home() {
               className="block rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 transition-shadow hover:shadow-md"
             >
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+                <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                   Current Focus
                 </span>
-                <span className="flex items-center gap-1 text-[10px] text-emerald-500 font-[family-name:var(--font-geist-sans)]">
+                <span className="flex items-center gap-1 text-[10px] text-emerald-500 font-[family-name:var(--font-geist-pixel-grid)]">
                   <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                   Live
                 </span>
               </div>
-              <p className="mb-2 text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-sans)]">
+              <p className="mb-2 text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-pixel-grid)]">
                 Syntri AI
               </p>
-              <p className="text-xs font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+              <p className="text-xs font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                 The first agentic territory management platform for B2B sales teams.
               </p>
             </motion.a>
@@ -293,17 +293,17 @@ export default function Home() {
               className="block rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 transition-shadow hover:shadow-md"
             >
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+                <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                   Course
                 </span>
-                <span className="rounded-full bg-[var(--badge)] px-2 py-0.5 text-[10px] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+                <span className="rounded-full bg-[var(--badge)] px-2 py-0.5 text-[10px] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                   April 2026
                 </span>
               </div>
-              <p className="mb-2 text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-sans)]">
+              <p className="mb-2 text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-pixel-grid)]">
                 BLDR
               </p>
-              <p className="text-xs font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+              <p className="text-xs font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                 Teaching sales operators to build production SaaS with AI agents.
               </p>
             </motion.a>
@@ -325,13 +325,13 @@ export default function Home() {
           >
             <motion.p
               variants={fadeUp}
-              className="mb-6 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]"
+              className="mb-6 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]"
             >
               Experience
             </motion.p>
 
             <div className="relative">
-              <div className="absolute left-0 top-0 bottom-0 w-px bg-[var(--border)]">
+              <div className="absolute left-[1.25px] top-2.5 bottom-2.5 w-px bg-[var(--border)]">
                 <motion.div
                   className="absolute top-0 left-0 w-full bg-emerald-500 opacity-60"
                   animate={{
@@ -352,7 +352,7 @@ export default function Home() {
                     }}
                   >
                     <motion.div
-                      className="absolute -left-[25px] top-1.5 w-2.5 h-2.5 rounded-full border-2 transition-all duration-300"
+                      className="absolute -left-[24px] md:-left-[32px] top-1.5 w-2.5 h-2.5 rounded-full border-2 transition-all duration-300"
                       animate={{
                         borderColor: activeIndex === index ? "#10b981" : "var(--border)",
                         backgroundColor: activeIndex === index ? "#10b981" : "var(--bg)",
@@ -365,24 +365,24 @@ export default function Home() {
                     />
                     <div className="mb-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                       <span
-                        className={`text-sm font-medium font-[family-name:var(--font-geist-mono)] transition-colors duration-300 ${
+                        className={`text-sm font-medium font-[family-name:var(--font-geist-pixel-grid)] transition-colors duration-300 ${
                           activeIndex === index ? "text-[var(--text)]" : "text-[var(--muted)]"
                         }`}
                       >
                         {entry.company}
                       </span>
-                      <span className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+                      <span className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                         {entry.role}
                       </span>
                       <span
-                        className={`ml-auto text-[10px] font-[family-name:var(--font-geist-sans)] ${
+                        className={`ml-auto text-[10px] font-[family-name:var(--font-geist-pixel-grid)] ${
                           entry.current ? "text-emerald-500" : "text-[var(--muted)]"
                         }`}
                       >
                         {entry.period}
                       </span>
                     </div>
-                    <p className="text-xs md:text-sm font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-sans)]">
+                    <p className="text-xs md:text-sm font-light leading-[1.7] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                       {entry.description}
                     </p>
                   </motion.div>
@@ -400,7 +400,7 @@ export default function Home() {
           >
             <motion.p
               variants={fadeUp}
-              className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--muted)] font-[family-name:var(--font-geist-sans)] mb-6"
+              className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)] mb-6"
             >
               Writing
             </motion.p>
@@ -423,14 +423,14 @@ export default function Home() {
                   className="flex items-start justify-between gap-4 py-4 border-b border-[var(--border)] group cursor-pointer"
                 >
                   <div>
-                    <p className="text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-sans)] group-hover:text-emerald-500 transition-colors duration-200 mb-1">
+                    <p className="text-sm font-medium text-[var(--text)] font-[family-name:var(--font-geist-pixel-grid)] group-hover:text-emerald-500 transition-colors duration-200 mb-1">
                       {post.title}
                     </p>
-                    <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-light leading-[1.6]">
+                    <p className="text-xs text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)] font-light leading-[1.6]">
                       {post.description}
                     </p>
                   </div>
-                  <span className="text-[10px] text-[var(--muted)] font-[family-name:var(--font-geist-sans)] whitespace-nowrap mt-0.5">
+                  <span className="text-[10px] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)] whitespace-nowrap mt-0.5">
                     {post.date}
                   </span>
                 </motion.a>
@@ -443,7 +443,7 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="mt-16 text-[11px] tracking-wide text-[var(--muted)] font-[family-name:var(--font-geist-sans)]"
+            className="mt-16 text-[11px] tracking-wide text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]"
           >
             © 2026 Cristian Sanchez-Aguilera
           </motion.p>
