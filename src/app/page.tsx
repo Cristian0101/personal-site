@@ -10,7 +10,14 @@ import {
   XLogo,
 } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 
 const experience = [
   {
@@ -126,23 +133,110 @@ const slideLeft: Variants = {
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const entryRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const markerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const timelineProgress = useMotionValue(0);
+  const shouldReduceMotion = useReducedMotion();
+  const smoothTimelineProgress = useSpring(timelineProgress, {
+    stiffness: 260,
+    damping: 34,
+    mass: 0.22,
+  });
+  const renderedTimelineProgress = shouldReduceMotion
+    ? timelineProgress
+    : smoothTimelineProgress;
+  const movingNodeTop = useTransform(
+    renderedTimelineProgress,
+    (value) => `${value * 100}%`
+  );
 
-	  useEffect(() => {
-	    const observers = entryRefs.current.map((ref, index) => {
-	      if (!ref) return null;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIndex(index);
-        },
-        { threshold: 0.5, rootMargin: "-20% 0px -60% 0px" }
+  useEffect(() => {
+    let frameId: number | null = null;
+    let timeoutId: number | null = null;
+
+    const updateTimelineProgress = () => {
+      frameId = null;
+
+      const track = trackRef.current;
+      const markers = markerRefs.current
+        .map((marker) => {
+          if (!marker) return null;
+          const rect = marker.getBoundingClientRect();
+          return rect.top + rect.height / 2;
+        })
+        .filter((center): center is number => center !== null);
+
+      if (!track || markers.length === 0) {
+        timelineProgress.set(0);
+        setActiveIndex(0);
+        return;
+      }
+
+      if (markers.length === 1) {
+        timelineProgress.set(0);
+        setActiveIndex(0);
+        return;
+      }
+
+      const firstCenter = markers[0];
+      const lastCenter = markers[markers.length - 1];
+      const viewportAnchor = window.innerHeight * 0.35;
+      const atPageBottom =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 1;
+
+      const targetCenter = atPageBottom
+        ? lastCenter
+        : Math.min(Math.max(viewportAnchor, firstCenter), lastCenter);
+
+      const segment = lastCenter - firstCenter;
+      const normalizedProgress =
+        segment <= 0 ? 0 : (targetCenter - firstCenter) / segment;
+
+      const trackRect = track.getBoundingClientRect();
+      const trackHeight = trackRect.height;
+      const firstTrackRatio =
+        trackHeight <= 0 ? 0 : (firstCenter - trackRect.top) / trackHeight;
+      const lastTrackRatio =
+        trackHeight <= 0 ? 0 : (lastCenter - trackRect.top) / trackHeight;
+
+      const rawTrackProgress =
+        firstTrackRatio + normalizedProgress * (lastTrackRatio - firstTrackRatio);
+      const clampedTrackProgress = Math.min(Math.max(rawTrackProgress, 0), 1);
+
+      timelineProgress.set(clampedTrackProgress);
+
+      const nextActiveIndex = atPageBottom
+        ? markers.length - 1
+        : markers.reduce((closestIndex, center, index, arr) => {
+            const currentDistance = Math.abs(center - targetCenter);
+            const closestDistance = Math.abs(arr[closestIndex] - targetCenter);
+            return currentDistance < closestDistance ? index : closestIndex;
+          }, 0);
+
+      setActiveIndex((previousIndex) =>
+        previousIndex === nextActiveIndex ? previousIndex : nextActiveIndex
       );
-      observer.observe(ref);
-      return observer;
-    });
+    };
 
-	    return () => observers.forEach((observer) => observer?.disconnect());
-	  }, []);
+    const scheduleUpdate = () => {
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(updateTimelineProgress);
+    };
+
+    scheduleUpdate();
+    timeoutId = window.setTimeout(scheduleUpdate, 100);
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, [timelineProgress]);
 
   return (
     <>
@@ -331,13 +425,17 @@ export default function Home() {
             </motion.p>
 
             <div className="relative">
-              <div className="absolute left-[1.25px] top-2.5 bottom-2.5 w-px bg-[var(--border)]">
+              <div
+                ref={trackRef}
+                className="absolute left-[1.25px] top-2.5 bottom-2.5 w-px bg-[var(--border)]"
+              >
                 <motion.div
-                  className="absolute top-0 left-0 w-full bg-emerald-500 opacity-60"
-                  animate={{
-                    height: `${((activeIndex + 1) / experience.length) * 100}%`,
-                  }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="absolute top-0 left-0 h-full w-full bg-emerald-500 opacity-60 origin-top"
+                  style={{ scaleY: renderedTimelineProgress }}
+                />
+                <motion.div
+                  className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-300 bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.16),0_0_14px_rgba(16,185,129,0.36)]"
+                  style={{ top: movingNodeTop }}
                 />
               </div>
 
@@ -347,12 +445,12 @@ export default function Home() {
                     key={`${entry.company}-${entry.period}`}
                     variants={slideLeft}
                     className="relative"
-                    ref={(element) => {
-                      entryRefs.current[index] = element;
-                    }}
                   >
                     <motion.div
                       className="absolute -left-[24px] md:-left-[32px] top-1.5 w-2.5 h-2.5 rounded-full border-2 transition-all duration-300"
+                      ref={(element) => {
+                        markerRefs.current[index] = element;
+                      }}
                       animate={{
                         borderColor: activeIndex === index ? "#10b981" : "var(--border)",
                         backgroundColor: activeIndex === index ? "#10b981" : "var(--bg)",
