@@ -1,5 +1,31 @@
 @import "tailwindcss";
 
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg: #FAFAF8;
+  --bg-card: #FFFFFF;
+  --text: #1C1917;
+  --muted: #78716C;
+  --border: #E7E5E4;
+  --badge: #F5F5F4;
+}
+
+.dark {
+  --bg: #0F0F0F;
+  --bg-card: #1A1A1A;
+  --text: #FAFAF8;
+  --muted: #A8A29E;
+  --border: #2A2A2A;
+  --badge: #222222;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 :root {
   --background: #faf9f6;
   --foreground: #17120f;
