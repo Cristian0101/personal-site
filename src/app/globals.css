@@ -12,12 +12,23 @@ html { scroll-behavior: smooth; }
 }
 
 .dark {
-  --bg: #0F0F0F;
-  --bg-card: #1A1A1A;
-  --text: #FAFAF8;
-  --muted: #A8A29E;
-  --border: #2A2A2A;
-  --badge: #222222;
+  --bg: #0C0C0C;
+  --bg-card: #161616;
+  --text: #F5F5F3;
+  --muted: #999692;
+  --border: #2C2C2C;
+  --badge: #1E1E1E;
+}
+
+.dark .link-pill {
+  background-color: var(--bg-card);
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.dark .link-pill:hover {
+  border-color: var(--text);
+  color: var(--text);
 }
 
 body {
@@ -27,19 +38,18 @@ body {
 }
 
 :root {
-  --background: #faf9f6;
-  --foreground: #17120f;
-  --surface: #ffffff;
-  --surface-soft: #f3f1ec;
-  --line: #1f1b19;
-  --muted: #6d625b;
+  --background: var(--bg);
+  --foreground: var(--text);
+  --surface: var(--bg-card);
+  --surface-soft: var(--badge);
+  --line: var(--border);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-pixel);
-  --font-mono: var(--font-geist-pixel);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 * {
@@ -53,9 +63,9 @@ body {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-pixel), "Courier New", monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: 0.01em;
 }
 

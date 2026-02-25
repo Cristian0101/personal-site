@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-
-const geistPixel = localFont({
-  src: "../../public/fonts/GeistPixelSquare.woff2",
-  variable: "--font-geist-pixel",
-  display: "swap",
-  weight: "500",
-});
 
 export const metadata: Metadata = {
   title: "Cristian Sanchez-Aguilera",
@@ -35,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistPixel.variable} antialiased`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
         </ThemeProvider>
