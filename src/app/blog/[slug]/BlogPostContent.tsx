@@ -46,7 +46,7 @@ function ContentBlock({ block }: { block: string }) {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className="my-10 text-center font-mono text-sm tracking-[0.3em] uppercase text-emerald-500/70 select-none"
+        className="my-10 text-center font-mono text-sm tracking-[0.3em] uppercase text-[var(--color-accent)] opacity-70 select-none"
       >
         meditate.
       </motion.p>
@@ -61,7 +61,7 @@ function ContentBlock({ block }: { block: string }) {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="my-10 pl-6 border-l-2 border-emerald-500/40 text-[var(--color-muted)] italic text-lg leading-relaxed"
+        className="my-10 pl-6 border-l-2 border-[var(--accent-border)] text-[var(--color-muted)] italic text-lg leading-relaxed"
       >
         {renderInlineFormatting(trimmed)}
       </motion.blockquote>
@@ -191,7 +191,7 @@ export default function BlogPostContent({ post }: { post: BlogPost }) {
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-emerald-500 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
           >
             <ArrowLeft size={16} />
             Back to Writing

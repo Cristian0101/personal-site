@@ -50,7 +50,7 @@ export default function BlogPage() {
               <Link href={`/blog/${post.slug}`} className="group block">
                 <div className="flex items-baseline justify-between py-6 border-b border-[var(--color-border)]">
                   <div className="flex-1 mr-8">
-                    <h2 className="font-mono text-lg text-[var(--color-text)] group-hover:text-emerald-500 transition-colors duration-200 group-hover:translate-x-1 transform">
+                    <h2 className="font-mono text-lg text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors duration-200 group-hover:translate-x-1 transform">
                       {post.title}
                     </h2>
                     <p className="text-sm text-[var(--color-muted)] mt-1">

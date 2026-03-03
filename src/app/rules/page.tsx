@@ -93,7 +93,7 @@ export default function RulesPage() {
               key={i}
               variants={fadeUp}
               className="group flex gap-6 py-5 border-b border-[var(--border)]">
-              <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--border)] group-hover:text-emerald-500 transition-colors duration-300 pt-0.5 select-none min-w-[24px] shrink-0">
+              <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--border)] group-hover:text-[var(--color-accent)] transition-colors duration-300 pt-0.5 select-none min-w-[24px] shrink-0">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.8] group-hover:text-[var(--text)] transition-colors duration-300">

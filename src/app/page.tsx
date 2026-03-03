@@ -202,6 +202,17 @@ export default function Home() {
         return Math.min(Math.max(ratio, 0), 1);
       });
       markerTrackPositionsRef.current = markerTrackPositions;
+      const pageBottom = window.scrollY + window.innerHeight;
+      const docBottom = document.documentElement.scrollHeight;
+      const isNearBottom = pageBottom >= docBottom - 1;
+
+      if (isNearBottom) {
+        const lastIndex = markerTrackPositions.length - 1;
+        const lastRatio = markerTrackPositions[lastIndex] ?? 1;
+        timelineProgress.set(lastRatio);
+        setActiveIndex(Math.max(lastIndex, 0));
+        return;
+      }
 
       if (markers.length === 1) {
         timelineProgress.set(markerTrackPositions[0] ?? 0);
@@ -376,8 +387,8 @@ export default function Home() {
                 <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--muted)] font-[family-name:var(--font-geist-pixel-grid)]">
                   Current Focus
                 </span>
-                <span className="flex items-center gap-1 text-[10px] text-emerald-500 font-[family-name:var(--font-geist-pixel-grid)]">
-                  <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                <span className="flex items-center gap-1 text-[10px] text-[var(--accent)] font-[family-name:var(--font-geist-pixel-grid)]">
+                  <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent)]" />
                   Live
                 </span>
               </div>
@@ -441,12 +452,16 @@ export default function Home() {
                 className="absolute left-[1.25px] top-2.5 bottom-2.5 w-px bg-[var(--border)]"
               >
                 <motion.div
-                  className="absolute top-0 left-0 h-full w-full bg-emerald-500 opacity-60 origin-top"
+                  className="absolute top-0 left-0 h-full w-full bg-[var(--accent)] opacity-65 origin-top"
                   style={{ scaleY: renderedTimelineProgress }}
                 />
                 <motion.div
-                  className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-300 bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.16),0_0_14px_rgba(16,185,129,0.36)]"
-                  style={{ top: movingNodeTop }}
+                  className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--accent)] bg-[var(--accent)]"
+                  style={{
+                    top: movingNodeTop,
+                    boxShadow:
+                      "0 0 0 3px var(--accent-soft), 0 0 14px var(--accent-ring)",
+                  }}
                 />
               </div>
 
@@ -463,12 +478,14 @@ export default function Home() {
                         markerRefs.current[index] = element;
                       }}
                       animate={{
-                        borderColor: activeIndex === index ? "#10b981" : "var(--border)",
-                        backgroundColor: activeIndex === index ? "#10b981" : "var(--bg)",
+                        borderColor:
+                          activeIndex === index ? "var(--accent)" : "var(--border)",
+                        backgroundColor:
+                          activeIndex === index ? "var(--accent)" : "var(--bg)",
                         boxShadow:
                           activeIndex === index
-                            ? "0 0 0 3px rgba(16,185,129,0.15), 0 0 12px rgba(16,185,129,0.3)"
-                            : "0 0 0 0px rgba(16,185,129,0)",
+                            ? "0 0 0 3px var(--accent-soft), 0 0 12px var(--accent-ring)"
+                            : "0 0 0 0px rgba(47,107,255,0)",
                       }}
                       transition={{ duration: 0.3 }}
                     />
@@ -485,7 +502,7 @@ export default function Home() {
                       </span>
                       <span
                         className={`ml-auto text-[10px] font-[family-name:var(--font-geist-pixel-grid)] ${
-                          entry.current ? "text-emerald-500" : "text-[var(--muted)]"
+                          entry.current ? "text-[var(--accent)]" : "text-[var(--muted)]"
                         }`}
                       >
                         {entry.period}
