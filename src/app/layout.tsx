@@ -1,25 +1,29 @@
 import type { Metadata } from "next";
-import { GeistPixelGrid } from "geist/font/pixel";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Cristian Sanchez-Aguilera",
+  metadataBase: new URL("https://cristiansanchezaguilera.com"),
+  title: "Cristian Sanchez-Aguilera — Founder, Builder & GTM Operator",
   description:
-    "Founder of Syntri AI. 20-year-old solo builder shipping in public.",
+    "Cristian broke into enterprise tech sales at 19, learned GTM at Varonis, Swap, and DataSnipper, and now builds and sells Syntri.",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Cristian Sanchez-Aguilera",
+    title: "Cristian Sanchez-Aguilera — Founder, Builder & GTM Operator",
     description:
-      "Founder of Syntri AI. Building the first agentic BDR platform.",
+      "Sales, product, and engineering in one loop—from enterprise SaaS at 19 to building and selling Syntri.",
     url: "https://cristiansanchezaguilera.com",
     siteName: "Cristian Sanchez-Aguilera",
   },
   twitter: {
     card: "summary",
-    title: "Cristian Sanchez-Aguilera",
-    description: "Founder of Syntri AI. Building in public.",
+    title: "Cristian Sanchez-Aguilera — Founder, Builder & GTM Operator",
+    description: "From enterprise SaaS sales at 19 to building and selling Syntri.",
     creator: "@CristianXIV",
   },
+  other: { "theme-color": "#070A10" },
 };
 
 export default function RootLayout({
@@ -28,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={GeistPixelGrid.variable}>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {children}

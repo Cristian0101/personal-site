@@ -10,8 +10,8 @@ export interface BlogPost {
 export const posts: BlogPost[] = [
   {
     slug: "take-a-walk-with-me",
-    title: "Take a Walk with Me",
-    subtitle: "How 1.5 years of cold calls turned into building a SaaS product.",
+    title: "I dropped out. Then I broke into tech at 19.",
+    subtitle: "The unconventional path from overnight freight and direct sales to enterprise SaaS, founding GTM, and building Syntri.",
     date: "February 2026",
     readTime: "10 min read",
     content: `One of the habits I've always tried to maintain is my ability to write. Five years of daily journaling - custom prompts to invoke thought, entries that no one will ever read. It's the one discipline that stuck through everything else falling apart and coming back together.
@@ -54,7 +54,7 @@ In eleventh grade, I pivoted to software engineering. Quarantine hit. People wer
 
 meditate.
 
-Then I heard the announcement: an AI that could write paragraphs. ChatGPT. I was one of the first 0.5% of users - so early that after you typed a prompt, nothing happened until you refreshed the page. Before they introduced a paid plan. Before GPT-3.5 even existed.
+Then I heard the announcement: an AI that could write paragraphs. ChatGPT. I started using it early, before a paid plan existed, and got hooked on generative AI.
 
 Generative AI. Hooked instantly.
 
@@ -102,7 +102,7 @@ Why was everyone figuring this out at eighteen and I couldn't?
 
 meditate.
 
-I felt like shit having my parents pay for community college because I hadn't figured out how to make $10K yet at eighteen. My plan failed. Everyone told me the journey takes longer than you think when you're young. I didn't listen. But would I stop?
+I felt like shit having my parents pay for community college because I hadn't figured out how to make $10K yet at eighteen. My plan failed. Everyone told me these things take longer than you think when you're young. I didn't listen. But would I stop?
 
 No. I refused.
 
@@ -148,7 +148,7 @@ Tech sales changed everything.
 
 Being a BDR taught me how companies actually operate from the inside - how revenue engines work, how sales teams are structured, how GTM motions run, how pipeline gets built and lost. I learned what a real sales cycle looks like. How marketing hands off to sales. How a single rep's territory can make or break a quarter. The mechanics of B2B that you can't learn from a course or a podcast.
 
-Varonis showed me what enterprise sales discipline looks like. Swap gave me the founding GTM experience - building the playbook from scratch, not inheriting one. DataSnipper put me in the middle of a high-growth team where I could see every crack in the system up close. Every one of those roles gave me something. I met great people.
+Varonis showed me what enterprise sales discipline looks like. Swap gave me founding GTM experience - building the playbook instead of inheriting one. DataSnipper gave me a real quota to carry every month. Every role added a different piece.
 
 But something was pulling at me the entire time. I wanted to build ventures alongside the work, and being a BDR commuting into the city left no room for that. The job started giving me the same feeling school did - useful for a season, but not the destination.
 
@@ -160,15 +160,13 @@ Territory assignments that made no sense. Signal overload with no prioritization
 
 Then came the idea.
 
-What started as an AI agency concept became Syntri AI the moment I joined DataSnipper and saw all of these problems up close. Not from a whiteboard. Not from a case study. From sitting in the seat, doing the job, feeling the pain every single day.
-
-That's the thing no one talks about - the best products don't come from market research. They come from frustration. From being the user who gets ignored.
+What started as an AI agency concept became Syntri AI when the BDR problems I had been writing down began to repeat. I knew the workflows because I was doing the job every day.
 
 "The best way to become the person you want to become is to put yourself in the situation where you have no option but to do so."
 
 The models are getting really good at code. I never lost my AI edge - X has the best real-time updates on this. I've been building with AI tools since before most people knew they existed. Started planning Syntri in October. Building it in November. By February, I had a platform that does what six tools couldn't do together.
 
-I'm twenty years old. No degree. No co-founder. No VC backing yet. Building the first agentic BDR tool - built by a BDR. Every feature informed by real problems I lived through. Every design decision made by someone who actually sat in that chair and made those calls.
+No degree. No co-founder. I was building an agentic BDR tool from the perspective of someone who had sat in the chair and made the calls.
 
 ---
 
@@ -176,9 +174,9 @@ People ask me what drives me. I think it's simpler than it sounds.
 
 I grew up watching my dad build a business with a third-grade education. I grew up watching characters with no superpowers outthink everyone in the room. I grew up in a house where risk wasn't something you calculated - it was something you just did because the alternative was standing still.
 
-I'm really excited to keep playing this game. Learning, taking risks, failing, winning hard. Working fourteen hours on something I'm passionate about. Celebrating with the people I love. Helping my parents the way they helped me. Building something that matters.
+I'm excited to keep playing this game. Learning, taking risks, failing, winning hard. Spending long days on work I care about. Celebrating with the people I love. Helping my parents the way they helped me. Building something that matters.
 
-At twenty, that's what I'd define as a good life.
+That is what I would define as a good life.
 
 Curious to see where things end up.`,
   },
