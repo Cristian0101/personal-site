@@ -57,3 +57,55 @@
 - P3: tune ASCII density and speed after observing the animation on the user's preferred physical mobile device.
 
 final result: passed
+
+# Design QA — Nebula product-wall logo update
+
+## Comparison target
+
+- Source visual truth: `/Users/cristiansanchez/Downloads/ChatGPT Image Aug 30, 2026, 03_06_41 PM.png`.
+- Implementation screenshots: `/tmp/nebula-product-wall-desktop.png` and `/tmp/nebula-profile-desktop.png`.
+- Combined comparison evidence: the source image and both desktop implementation captures were opened together during the final visual review.
+- Route and state: `http://127.0.0.1:3000/#ecosystem`, light theme, Nebula card visible and Nebula profile dialog open.
+- Source pixels: 1254 × 1254 RGBA.
+- Desktop implementation pixels and CSS viewport: 1707 × 960 at the browser's default density.
+- Responsive evidence: the in-app browser measured 391 × 844 CSS pixels after a temporary narrow viewport override; the card and dialog rendered in the one-column layout. The narrow viewport compositor did not produce a reliable viewport screenshot, so mobile proof is recorded through DOM visibility, geometry, and interaction state rather than treated as visual screenshot evidence.
+
+## Findings
+
+- No actionable P0, P1, or P2 fidelity issues remain.
+- The supplied blue-violet modular cube replaces the previous star-field N mark without changing the product-wall card, modal, copy, or animation behavior.
+
+## Required fidelity surfaces
+
+- Fonts and typography: unchanged existing site typography; Nebula card and dialog copy keep their prior hierarchy and wrapping.
+- Spacing and layout rhythm: existing card and dialog logo frames remain intact; the mark is contained without clipping at desktop and mobile widths.
+- Colors and visual tokens: the reference's deep navy, violet, and electric blue faces are preserved; the existing dark tile provides the intended contrast in the light product-wall theme.
+- Image quality and asset fidelity: `public/images/project-nebula.png` is byte-for-byte identical to the supplied PNG and remains a real raster asset rendered through `next/image`.
+- Copy and content: no Nebula copy changed.
+
+## Focused region comparison
+
+- The source mark's six separated faces, central violet top, and blue-to-violet lower faces are visible in the card and profile logo frames. The existing `object-fit: contain` treatment preserves the full silhouette and transparent margins.
+
+## Interaction and responsive verification
+
+- Clicking `Learn more about Nebula` opened the Nebula dialog with one visible `Nebula logo` image; closing it removed the dialog and returned to the card.
+- The same card and dialog interaction passed at the 391 × 844 CSS-pixel mobile breakpoint.
+- Final clean in-app browser tab reported zero relevant console warnings or errors.
+
+## Comparison history
+
+- Final desktop comparison: source, card, and profile captures showed the same supplied mark with no actionable P0/P1/P2 mismatch.
+- Final mobile check: DOM visibility, logo presence, dialog state, and card geometry passed; screenshot capture was excluded from fidelity judgment because the narrow in-app compositor returned a blank viewport while the DOM remained rendered.
+
+## Automated verification
+
+- `npm run build`: passed, including TypeScript, static generation, and route generation. Next emitted only its existing multiple-lockfile workspace-root warning.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+
+## Follow-up polish
+
+- None required for this asset-only update.
+
+final result: passed
