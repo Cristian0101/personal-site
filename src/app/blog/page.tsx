@@ -1,82 +1,88 @@
-"use client";
-
-import { motion } from "framer-motion";
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "@phosphor-icons/react";
-import { posts } from "@/lib/posts";
+import { Newsletter } from "@/components/site/Newsletter";
+import { fetchBeehiivIssues, newsletterConfig } from "@/lib/newsletter";
+import { mergeWritings } from "@/lib/writings";
 
-export default function BlogPage() {
+export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: "Writing — Origin",
+  description:
+    "Origin: notes on founder life, tech sales, systems, and building. Essays, field notes, and the weekly newsletter.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Writing — Origin",
+    description: "Notes on founder life, tech sales, systems, and building.",
+    images: [{ url: "/origin/banner.jpg", width: 1024, height: 576 }],
+  },
+};
+
+export default async function BlogPage() {
+  const issues = await fetchBeehiivIssues();
+  const writings = mergeWritings(issues);
+  const archiveUrl = newsletterConfig.publicationUrl || "https://cristians-newsletter-00abb3.beehiiv.com";
+
   return (
-    <main className="min-h-screen px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[560px] md:max-w-[780px]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors mb-16"
-          >
-            <ArrowLeft size={16} />
-            Back
-          </Link>
-        </motion.div>
+    <main id="main" className="blog-doc writing-doc">
+      <p className="blog-doc__label">Writing</p>
+      <h1>Origin</h1>
+      <p className="blog-doc__lede">
+        Notes on founder life, tech sales, systems, and building. The weekly letter lives on Beehiiv; essays stay here.
+      </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <p className="text-xs tracking-[0.2em] uppercase text-[var(--color-muted)] mb-4 font-mono">
-            Writing
-          </p>
-          <h1 className="text-4xl md:text-5xl font-mono font-normal tracking-tight mb-4">
-            Essays & Build-in-Public
-          </h1>
-          <p className="text-[var(--color-muted)] text-lg mb-16">
-            Raw notes from building a SaaS as a solo founder.
-          </p>
-        </motion.div>
+      <figure className="origin-banner">
+        <Image
+          src="/origin/banner.jpg"
+          alt="Origin — notes on founder life, tech sales, systems, and building"
+          width={1024}
+          height={576}
+          priority
+        />
+      </figure>
 
-        <div className="space-y-0">
-          {posts.map((post, index) => (
-            <motion.div
-              key={post.slug}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
-            >
-              <Link href={`/blog/${post.slug}`} className="group block">
-                <div className="flex items-baseline justify-between py-6 border-b border-[var(--color-border)]">
-                  <div className="flex-1 mr-8">
-                    <h2 className="font-mono text-lg text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors duration-200 group-hover:translate-x-1 transform">
-                      {post.title}
-                    </h2>
-                    <p className="text-sm text-[var(--color-muted)] mt-1">
-                      {post.subtitle}
-                    </p>
-                  </div>
-                  <span className="text-sm text-[var(--color-muted)] whitespace-nowrap font-mono">
-                    {post.date}
-                  </span>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+      <Newsletter />
+
+      <section className="writing-index" aria-labelledby="writing-index-title">
+        <div className="writing-index__head">
+          <h2 id="writing-index-title">Recent</h2>
+          <a href={archiveUrl} target="_blank" rel="noreferrer">
+            Origin archive ↗
+          </a>
         </div>
 
-        <motion.footer
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-24 pt-8 border-t border-[var(--color-border)]"
-        >
-          <p className="text-sm text-[var(--color-muted)]">
-            &copy; 2026 Cristian Sanchez-Aguilera
-          </p>
-        </motion.footer>
-      </div>
+        {writings.map((item) => {
+          const className = "writing-card";
+          const body = (
+            <>
+              <span className="writing-card__kind">{item.source}</span>
+              <span className="writing-card__copy">
+                <span className="writing-card__title">
+                  {item.title}
+                  {item.external ? <span className="writing-card__out">↗</span> : null}
+                </span>
+                <span className="writing-card__sub">{item.subtitle}</span>
+              </span>
+              <span className="writing-card__date">{item.date}</span>
+            </>
+          );
+
+          return item.external ? (
+            <a key={item.id} href={item.href} target="_blank" rel="noreferrer" className={className}>
+              {body}
+            </a>
+          ) : (
+            <Link key={item.id} href={item.href} className={className}>
+              {body}
+            </Link>
+          );
+        })}
+      </section>
+
+      <footer className="blog-footer">
+        <p>&copy; 2026 Cristian Sanchez-Aguilera</p>
+      </footer>
     </main>
   );
 }

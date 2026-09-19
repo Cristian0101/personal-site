@@ -1,34 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const timeZone = "America/New_York";
 
-function getClockParts(date: Date) {
-  const timeParts = new Intl.DateTimeFormat("en-US", {
+function getClock(date: Date) {
+  const parts = new Intl.DateTimeFormat("en-US", {
     timeZone,
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(date);
-
-  const detail = new Intl.DateTimeFormat("en-US", {
-    timeZone,
-    weekday: "short",
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
+    hour: "numeric",
     minute: "2-digit",
     second: "2-digit",
+    hour12: true,
     timeZoneName: "short",
-    hour12: false,
-  }).format(date);
+  }).formatToParts(date);
+
+  const read = (type: Intl.DateTimeFormatPartTypes) => parts.find((part) => part.type === type)?.value ?? "";
 
   return {
-    hour: timeParts.find((part) => part.type === "hour")?.value ?? "--",
-    minute: timeParts.find((part) => part.type === "minute")?.value ?? "--",
-    detail,
+    hour: read("hour"),
+    minute: read("minute"),
+    second: read("second"),
+    dayPeriod: read("dayPeriod"),
+    zone: read("timeZoneName") || "ET",
   };
 }
 
@@ -36,23 +29,35 @@ export function LiveClock() {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    const update = () => setNow(new Date());
-    update();
-    const timer = window.setInterval(update, 1000);
-    return () => window.clearInterval(timer);
+    const tick = () => setNow(new Date());
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
   }, []);
 
-  const clock = useMemo(() => (now ? getClockParts(now) : null), [now]);
+  const clock = now ? getClock(now) : null;
+  const label = clock
+    ? `Local time in New York: ${clock.hour}:${clock.minute}:${clock.second} ${clock.dayPeriod} ${clock.zone}`
+    : "New York time";
 
   return (
-    <div className="live-clock" aria-label={clock ? `Current New York time: ${clock.detail}` : "New York time loading"}>
-      <span>New York</span>
+    <time className="live-clock" dateTime={now?.toISOString()} aria-label={label}>
       <span className="live-clock__time" aria-hidden="true">
-        {clock?.hour ?? "--"}<span className="live-clock__colon">:</span>{clock?.minute ?? "--"}
+        {clock ? (
+          <>
+            {clock.hour}
+            <span className="live-clock__colon">:</span>
+            {clock.minute}
+            <span className="live-clock__colon">:</span>
+            {clock.second}
+          </>
+        ) : (
+          "--:--:--"
+        )}
       </span>
-      <span className="live-clock__detail" role="tooltip">
-        {clock?.detail ?? "Syncing New York time"}
+      <span className="live-clock__meta">
+        {clock ? `${clock.dayPeriod} ${clock.zone}` : "ET"}
       </span>
-    </div>
+    </time>
   );
 }

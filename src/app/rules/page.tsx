@@ -1,10 +1,6 @@
 'use client'
 
-import { motion, type Variants } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowLeft } from '@phosphor-icons/react'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
 
 const rules = [
   "When in a hole, sometimes the way out is digging deeper. Parry the punches.",
@@ -38,77 +34,31 @@ const rules = [
   "Once your goals are achieved, helping others becomes the purpose.",
 ]
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
-}
-
-const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.04 } },
-}
-
 export default function RulesPage() {
   return (
-    <main className={`${GeistSans.variable} ${GeistMono.variable} min-h-screen bg-[var(--bg)] px-6 py-20`}>
-      <div className="max-w-[560px] md:max-w-[780px] mx-auto">
+    <main id="main" className="rules-doc">
+      <Link href="/blog" className="blog-back">
+        ← Writing
+      </Link>
 
-        {/* Back */}
-        <motion.div
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}>
-          <Link href="/"
-            className="inline-flex items-center gap-1.5 text-xs text-[var(--muted)] font-[family-name:var(--font-geist-sans)] hover:text-[var(--text)] transition-colors duration-200 mb-14">
-            <ArrowLeft size={12} />
-            Back
-          </Link>
-        </motion.div>
+      <p className="blog-doc__label">Rules</p>
+      <h1>29 Things I Know So Far</h1>
+      <p className="blog-doc__lede">
+        Principles collected from doing, failing, and paying attention. Updated as I learn.
+      </p>
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-14">
-          <p className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--muted)] font-[family-name:var(--font-geist-sans)] mb-3">
-            Rules
-          </p>
-          <h1 className="font-[family-name:var(--font-geist-mono)] text-3xl md:text-4xl font-normal text-[var(--text)] leading-tight mb-3">
-            29 Things I Know So Far
-          </h1>
-          <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.7]">
-            Principles collected from doing, failing, and paying attention. Updated as I learn.
-          </p>
-        </motion.div>
+      <ol className="rules-list">
+        {rules.map((rule, i) => (
+          <li key={i}>
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            <p style={{ margin: 0 }}>{rule}</p>
+          </li>
+        ))}
+      </ol>
 
-        {/* Rules List */}
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          animate="show"
-          className="space-y-0">
-          {rules.map((rule, i) => (
-            <motion.div
-              key={i}
-              variants={fadeUp}
-              className="group flex gap-6 py-5 border-b border-[var(--border)]">
-              <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--border)] group-hover:text-[var(--color-accent)] transition-colors duration-300 pt-0.5 select-none min-w-[24px] shrink-0">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <p className="text-sm text-[var(--muted)] font-[family-name:var(--font-geist-sans)] font-normal leading-[1.8] group-hover:text-[var(--text)] transition-colors duration-300">
-                {rule}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Footer */}
-        <p className="mt-16 text-[11px] text-[var(--muted)] font-[family-name:var(--font-geist-sans)] tracking-wide">
-          © 2026 Cristian Sanchez-Aguilera
-        </p>
-
-      </div>
+      <footer className="blog-footer">
+        <p>© 2026 Cristian Sanchez-Aguilera</p>
+      </footer>
     </main>
   )
 }
