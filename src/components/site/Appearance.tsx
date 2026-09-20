@@ -18,14 +18,23 @@ export const sizes = [
   { id: "large", label: "L" },
 ] as const;
 
+export const widths = [
+  { id: "narrow", label: "Narrow" },
+  { id: "wide", label: "Wide" },
+  { id: "max", label: "Max" },
+] as const;
+
 export type TypefaceId = (typeof typefaces)[number]["id"];
 export type SizeId = (typeof sizes)[number]["id"];
+export type WidthId = (typeof widths)[number]["id"];
 
 type AppearanceState = {
   font: TypefaceId;
   size: SizeId;
+  width: WidthId;
   setFont: (font: TypefaceId) => void;
   setSize: (size: SizeId) => void;
+  setWidth: (width: WidthId) => void;
 };
 
 const AppearanceContext = createContext<AppearanceState | null>(null);
@@ -43,12 +52,14 @@ export function useAppearance() {
 export function AppearanceProvider({ children }: { children: ReactNode }) {
   const [font, setFontState] = useState<TypefaceId>("serif");
   const [size, setSizeState] = useState<SizeId>("regular");
+  const [width, setWidthState] = useState<WidthId>("narrow");
 
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("csa-appearance") ?? "{}") as Partial<AppearanceState>;
       if (saved.font && typefaces.some((item) => item.id === saved.font)) setFontState(saved.font);
       if (saved.size && sizes.some((item) => item.id === saved.size)) setSizeState(saved.size);
+      if (saved.width && widths.some((item) => item.id === saved.width)) setWidthState(saved.width);
     } catch {
       /* keep defaults */
     }
@@ -58,16 +69,19 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     root.dataset.font = font;
     root.dataset.size = size;
-    localStorage.setItem("csa-appearance", JSON.stringify({ font, size }));
-  }, [font, size]);
+    root.dataset.width = width;
+    localStorage.setItem("csa-appearance", JSON.stringify({ font, size, width }));
+  }, [font, size, width]);
 
   return (
     <AppearanceContext.Provider
       value={{
         font,
         size,
+        width,
         setFont: setFontState,
         setSize: setSizeState,
+        setWidth: setWidthState,
       }}
     >
       {children}
@@ -77,13 +91,14 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
 
 export function Customize() {
   const { resolvedTheme, setTheme } = useTheme();
-  const { font, size, setFont, setSize } = useAppearance();
+  const { font, size, width, setFont, setSize, setWidth } = useAppearance();
   const mounted = useSyncExternalStore(subscribe, clientTrue, serverFalse);
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const isDark = mounted && resolvedTheme === "dark";
   const fontIndex = typefaces.findIndex((item) => item.id === font);
   const sizeIndex = sizes.findIndex((item) => item.id === size);
+  const widthIndex = widths.findIndex((item) => item.id === width);
 
   useEffect(() => {
     if (!open) return;
@@ -170,6 +185,28 @@ export function Customize() {
                 aria-selected={size === item.id}
                 className={size === item.id ? "is-active" : ""}
                 onClick={() => setSize(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="customize__block">
+          <div className="customize__row">
+            <span>Width</span>
+            <small>{widths[widthIndex]?.label}</small>
+          </div>
+          <div className="width-slider" role="tablist" aria-label="Layout width">
+            <i className="width-slider__thumb" style={{ transform: `translateX(${widthIndex * 100}%)` }} />
+            {widths.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={width === item.id}
+                className={width === item.id ? "is-active" : ""}
+                onClick={() => setWidth(item.id)}
               >
                 {item.label}
               </button>

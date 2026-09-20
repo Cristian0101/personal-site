@@ -21,7 +21,12 @@ function CompanyRow({ business }: { business: Business }) {
             <Image src={business.logo} alt="" width={84} height={84} quality={92} />
           </div>
           <div className="company-row__main">
-            <strong>{business.name}</strong>
+            <div className="company-row__header">
+              <strong>{business.name}</strong>
+              {business.income ? (
+                <span className="company-row__income">{business.income.display}</span>
+              ) : null}
+            </div>
             <span>{business.description}</span>
           </div>
         </div>
@@ -46,6 +51,12 @@ function CompanyRow({ business }: { business: Business }) {
               <span>Outcome</span>
               <strong>{business.outcome}</strong>
             </div>
+            {business.income ? (
+              <div>
+                <span>Live numbers</span>
+                <strong>{business.income.display}</strong>
+              </div>
+            ) : null}
           </div>
           <div className="company-detail__features" aria-label={`${business.name} capabilities`}>
             {business.features.map((feature) => (

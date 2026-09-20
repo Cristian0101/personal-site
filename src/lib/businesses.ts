@@ -21,6 +21,11 @@ export type Business = {
   href?: string;
   linkLabel?: string;
   footerLabel?: string;
+  income?: {
+    primary: string;
+    secondary?: string;
+    display: string;
+  };
 };
 
 export const businesses: Business[] = [
@@ -60,6 +65,11 @@ export const businesses: Business[] = [
     logo: "/brands/syntri-original-blue.png",
     accent: "#1598ff",
     state: "Live",
+    income: {
+      primary: "$400 MRR",
+      secondary: "$4.8K ARR",
+      display: "$400 MRR · $4.8K ARR",
+    },
     href: "https://syntriai.com/",
   },
   {
@@ -79,6 +89,11 @@ export const businesses: Business[] = [
     logo: "/brands/outbound-foundry.png",
     accent: "#1ea7ff",
     state: "Live",
+    income: {
+      primary: "$6K revenue",
+      secondary: "$40K pipeline",
+      display: "$6K revenue · $40K pipeline",
+    },
     footerLabel: "Live · engagement-based",
   },
   {

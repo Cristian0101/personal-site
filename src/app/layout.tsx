@@ -69,6 +69,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       data-font="serif"
       data-size="regular"
+      data-width="narrow"
       suppressHydrationWarning
       className={`${GeistSans.variable} ${GeistMono.variable} ${newsreader.variable} ${inter.variable} ${fraunces.variable} ${plex.variable}`}
     >

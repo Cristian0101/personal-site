@@ -104,10 +104,11 @@ const glance = [
 const storyProof = [
   { mark: "16", label: "First money earned online" },
   { mark: "19", label: "Broke into enterprise SaaS" },
+  { mark: "$1.48M+", label: "Pipeline generated across SaaS, roofing, and home-improvement sales roles" },
   { mark: "$5K+ ARR", label: "Syntri" },
   { mark: "$6K+ revenue", label: "Outbound Foundry" },
   { mark: "$40K+ pipeline", label: "Client pipeline" },
-  { mark: "3 people", label: "Helped into tech sales" },
+  { mark: "7 people", label: "Helped into tech sales" },
 ];
 
 const buildPrinciples = [
@@ -415,10 +416,10 @@ export default function Home() {
           </p>
           <p className="story-beat">You don’t get to build the tool if you stop doing the job.</p>
           <p>
-            Outflow came from an earlier version of me: 19, no degree, no map, trying to persuade someone to take a chance. Three people have broken into tech sales through it so far.
+            Outflow came from an earlier version of me: 19, no degree, no map, trying to persuade someone to take a chance. Seven people have broken into tech sales through it so far.
           </p>
           <p>
-            Three is not a huge number. It is also three real people whose direction changed because something I built worked. That matters more to me than a dashboard full of sign-ups.
+            Seven is not a huge number. It is also seven real people whose direction changed because something I built worked. That matters more to me than a dashboard full of sign-ups.
           </p>
           <p>
             BLDR is newer. It is for operators who have ideas for software but feel locked out by the technical language surrounding it. I know what it is like to enter a field where everyone else seems to have been handed the dictionary. We are building the thing I would have wanted: a practical path from idea to working product without pretending the learning curve is not real.
