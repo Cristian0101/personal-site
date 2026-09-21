@@ -62,7 +62,7 @@ const journey = [
     number: "05",
     company: "DataSnipper",
     label: "Finance · audit automation",
-    detail: "Carried quota selling into finance and audit teams. Hit or exceeded target in 7 of 9 full-quota months. That was the first time I had a real number that was mine every month.",
+    detail: "Sold into finance and audit teams who did not want another tool — they wanted fewer hours in spreadsheets. That was the first time I had to explain a product in the language of the work it replaced, not the language of the pitch.",
     logo: "/career/datasnipper.svg",
     lightInvert: true,
   },
@@ -398,7 +398,7 @@ export default function Home() {
           <p>Three weeks later, at 19, I broke into enterprise SaaS with no degree and no network.</p>
           <p className="story-beat">Just reps.</p>
           <p>
-            Each company taught me a different version of how people buy. Varonis taught me enterprise discipline: long sales cycles, crowded buying committees, and how security teams think about risk. At Swap, I joined early enough that there was no finished playbook waiting for me. We had to find the message and the motion while running it. At DataSnipper, I carried a monthly quota selling audit automation. The number reset every month and had my name on it. There was nowhere to hide, which was useful.
+            Each company taught me a different version of how people buy. Varonis taught me enterprise discipline: long sales cycles, crowded buying committees, and how security teams think about risk. At Swap, I joined early enough that there was no finished playbook waiting for me. We had to find the message and the motion while running it. At DataSnipper, I sold audit automation to finance teams who did not want another tool. They wanted fewer hours in spreadsheets, which meant the pitch only worked if it sounded like their work.
           </p>
           <p>
             While doing the job, I kept a running list of everything that made sellers slower than they needed to be: research scattered across tabs, repetitive admin work, missing context, and tools that behaved like separate islands.
