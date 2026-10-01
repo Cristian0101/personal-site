@@ -15,6 +15,18 @@ export type Writing = {
   sortDate: string;
 };
 
+export const originMk2Issue: Writing = {
+  id: "origin-mk-2-minimize-optimize",
+  kind: "newsletter",
+  title: "Origin Mk 2: Minimize & Optimize",
+  subtitle: "Weekly notes on AI, tech sales, indie software, and building companies from $0.",
+  date: "Sep 30, 2026",
+  href: "https://cristians-newsletter-00abb3.beehiiv.com/p/origin-mk-2-minimize-optimize",
+  external: true,
+  source: "Origin",
+  sortDate: "2026-09-30",
+};
+
 export const originIssue: Writing = {
   id: "origin-mk1-introductions",
   kind: "newsletter",
@@ -26,6 +38,8 @@ export const originIssue: Writing = {
   source: "Origin",
   sortDate: "2026-09-13",
 };
+
+export const defaultNewsletterIssues: Writing[] = [originMk2Issue, originIssue];
 
 const nativeWritings: Writing[] = [
   ...posts.map((post) => ({
@@ -78,11 +92,11 @@ function fromIssue(issue: NewsletterIssue): Writing {
 }
 
 export function mergeWritings(issues: NewsletterIssue[]): Writing[] {
-  const newsletters = issues.length ? issues.map(fromIssue) : [originIssue];
+  const newsletters = issues.length ? issues.map(fromIssue) : defaultNewsletterIssues;
   const seen = new Set<string>();
   const merged: Writing[] = [];
 
-  for (const item of [...newsletters, originIssue, ...nativeWritings]) {
+  for (const item of [...newsletters, ...defaultNewsletterIssues, ...nativeWritings]) {
     const key = item.href.replace(/\/$/, "");
     if (seen.has(key) || seen.has(item.id)) continue;
     seen.add(key);

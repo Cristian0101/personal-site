@@ -82,8 +82,8 @@ const glance = [
   { what: "Door-to-door for five months", note: "then 3 weeks" },
   { what: "Broke into enterprise tech as a BDR", note: "at 19" },
   {
-    what: "Syntri crossed $5k ARR",
-    note: "still picking up",
+    what: "Syntri crossed $580 MRR",
+    note: "$6,960 proj ARR",
     logos: [{ src: "/brands/syntri-original-blue.png", alt: "Syntri" }],
   },
   {
@@ -105,7 +105,7 @@ const storyProof = [
   { mark: "16", label: "First money earned online" },
   { mark: "19", label: "Broke into enterprise SaaS" },
   { mark: "$1.48M+", label: "Pipeline generated across SaaS, roofing, and home-improvement sales roles" },
-  { mark: "$5K+ ARR", label: "Syntri" },
+  { mark: "$580 MRR", label: "Syntri ($6,960 proj ARR)" },
   { mark: "$6K+ revenue", label: "Outbound Foundry" },
   { mark: "$40K+ pipeline", label: "Client pipeline" },
   { mark: "7 people", label: "Helped into tech sales" },
@@ -477,7 +477,7 @@ export default function Home() {
       <section className="doc-section" aria-labelledby="building-title">
         <h2 id="building-title">Building</h2>
         <p>
-          Eleven companies. Products, two memberships, an open-source truth checker, and a calling block that keeps the lights on while the rest compounds.
+          Founder and owner of <strong>Northmark</strong> — the parent company to all my businesses: {businesses.length} companies spanning software, memberships, open-source tools, and services.
         </p>
         <p className="building-names">{businesses.map((business) => business.name).join(" · ")}</p>
         <p>

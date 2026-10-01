@@ -66,9 +66,9 @@ export const businesses: Business[] = [
     accent: "#1598ff",
     state: "Live",
     income: {
-      primary: "$400 MRR",
-      secondary: "$4.8K ARR",
-      display: "$400 MRR · $4.8K ARR",
+      primary: "$580 MRR",
+      secondary: "$6,960 Proj ARR",
+      display: "$580 MRR · $6,960 Proj ARR",
     },
     href: "https://syntriai.com/",
   },
@@ -258,3 +258,18 @@ export const buildingFilters = [
 ] as const;
 
 export type BuildingFilter = (typeof buildingFilters)[number]["id"];
+
+export const parentCompany = {
+  name: "Northmark Industries",
+  shortName: "Northmark",
+  role: "Founder & Owner",
+  tagline: "Software and education for people who sell and build.",
+  description:
+    "Parent company and holding umbrella across all my businesses — building practical software and education for people who sell, build, and bring ideas to market.",
+  logo: "/brands/northmark.jpg",
+  banner: "/images/northmark-banner.png",
+  ecosystemImage: "/images/northmark-ecosystem.png",
+  overview:
+    "Northmark helps people get in, perform, build, and grow. It connects each venture into one ecosystem: from career-entry and sales performance to builder education, pipeline execution, and open-source infrastructure.",
+};
+

@@ -1897,6 +1897,23 @@ input:focus-visible,
   line-height: 1.7 !important;
 }
 
+/* ——— Northmark parent company ——— */
+
+.northmark-banner {
+  margin: 10px 0 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #090e17;
+  box-shadow: 0 16px 36px rgba(8, 10, 16, 0.14);
+}
+
+.northmark-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .origin-banner {
   margin: 4px 0 22px;
   overflow: hidden;
