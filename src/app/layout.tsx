@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Sans, Inter, Newsreader } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "next-themes";
@@ -8,34 +7,7 @@ import { Header } from "@/components/site/Header";
 import { PageTransition } from "@/components/site/PageTransition";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
-
-const plex = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-plex",
-  display: "swap",
-});
+import "./fonts.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -72,8 +44,15 @@ export default function RootLayout({
       data-size="regular"
       data-width="narrow"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} ${newsreader.variable} ${inter.variable} ${fraunces.variable} ${plex.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
+      <head>
+        <link rel="preload" href="/fonts/newsreader-5611c55482296524-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/newsreader-4b9bb515ce6d026f-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/inter-e4af272ccee01ff0-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/fraunces-af4bf8399d1aacdf-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/ibm-plex-sans-26d4368bf94c0ec4-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AppearanceProvider>
