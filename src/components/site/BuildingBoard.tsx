@@ -63,14 +63,15 @@ function CompanyRow({ business }: { business: Business }) {
               <span key={feature}>{feature}</span>
             ))}
           </div>
-          {business.href ? (
-            <a className="company-detail__link" href={business.href} target="_blank" rel="noreferrer">
-              {business.linkLabel ?? `Visit ${business.name}`} <ArrowUpRight size={14} />
-            </a>
-          ) : (
+          {!business.href ? (
             <span className="company-row__state">{business.footerLabel ?? "In active development"}</span>
-          )}
+          ) : null}
         </div>
+      ) : null}
+      {business.href ? (
+        <a className="company-detail__link" href={business.href} target="_blank" rel="noreferrer">
+          {business.linkLabel ?? `Visit ${business.name}`} <ArrowUpRight size={14} />
+        </a>
       ) : null}
     </div>
   );

@@ -82,6 +82,16 @@ export default function BlogPostContent({ post }: { post: BlogPost }) {
         ))}
       </article>
 
+      {post.slug === "take-a-walk-with-me" ? (
+        <aside className="resource-next" aria-labelledby="story-resource-title">
+          <p className="resource-kicker">Put it into practice</p>
+          <h2 id="story-resource-title">Preparing for your own tech sales interview?</h2>
+          <p>Use the free Interview Prep Scorecard to research the role, practice your examples, and choose what to improve next.</p>
+          <Link href="/resources/interview-prep-scorecard">Get the free scorecard →</Link>
+          <p className="resource-small">Printable PDF + accessible HTML. No email required.</p>
+        </aside>
+      ) : null}
+
       <footer className="blog-footer">
         <Link href="/blog" className="blog-back" style={{ marginBottom: 16 }}>
           ← Back to writing

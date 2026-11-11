@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { AppearanceProvider } from "@/components/site/Appearance";
 import { Header } from "@/components/site/Header";
 import { PageTransition } from "@/components/site/PageTransition";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -37,7 +38,7 @@ const plex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cristiansanchezaguilera.com"),
+  metadataBase: new URL(SITE_URL),
   title: "Cristian Sanchez-Aguilera — Founder, Builder & GTM Operator",
   description:
     "Cristian broke into enterprise tech sales at 19, learned GTM at Varonis, Swap, and DataSnipper, and now builds and sells Syntri.",
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     title: "Cristian Sanchez-Aguilera — Founder, Builder & GTM Operator",
     description:
       "Sales, product, and engineering in one loop—from enterprise SaaS at 19 to building and selling Syntri.",
-    url: "https://cristiansanchezaguilera.com",
+    url: SITE_URL,
     siteName: "Cristian Sanchez-Aguilera",
   },
   twitter: {

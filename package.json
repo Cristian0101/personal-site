@@ -4,9 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:resources": "node scripts/test-resources.mjs",
+    "build:scorecard": "node scripts/build-interview-scorecard.mjs",
+    "test:resources:browser": "node scripts/test-resources-browser.mjs",
+    "build:daily-checklist": "node scripts/build-daily-checklist.mjs",
+    "test:resource-saving": "node scripts/test-resource-saving.mjs",
+    "build:tam-worksheet": "node scripts/build-tam-worksheet.mjs",
+    "build:cold-call-scorecard": "node scripts/build-cold-call-scorecard.mjs",
+    "build:cold-email-checklist": "node scripts/build-cold-email-checklist.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
@@ -25,6 +33,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "playwright": "1.64.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

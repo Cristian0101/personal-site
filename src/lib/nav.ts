@@ -1,5 +1,5 @@
 export type PrimarySection = {
-  href: "/" | "/businesses" | "/blog";
+  href: "/" | "/businesses" | "/blog" | "/resources";
   label: string;
   match: (path: string) => boolean;
 };
@@ -12,6 +12,7 @@ export const primarySections: PrimarySection[] = [
     label: "Writing",
     match: (path) => path.startsWith("/blog") || path.startsWith("/rules"),
   },
+  { href: "/resources", label: "Resources", match: (path) => path.startsWith("/resources") },
 ];
 
 export function sectionIndex(pathname: string): number {
@@ -19,9 +20,9 @@ export function sectionIndex(pathname: string): number {
   return index === -1 ? 0 : index;
 }
 
-/** True only on the three magazine roots — not nested essay/rules pages. */
+/** True only on the magazine roots — not nested essay/rules pages. */
 export function isSectionRoot(pathname: string): boolean {
-  return pathname === "/" || pathname === "/businesses" || pathname === "/blog";
+  return pathname === "/" || pathname === "/businesses" || pathname === "/blog" || pathname === "/resources";
 }
 
 export function sectionHrefAt(index: number): PrimarySection["href"] | null {
@@ -35,6 +36,7 @@ export function transitionKey(pathname: string): string {
   if (pathname.startsWith("/blog") || pathname.startsWith("/rules")) {
     return isSectionRoot(pathname) ? "writing" : `writing:${pathname}`;
   }
+  if (pathname.startsWith("/resources")) return pathname === "/resources" ? "resources" : `resources:${pathname}`;
   return pathname;
 }
 

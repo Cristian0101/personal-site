@@ -48,6 +48,7 @@ function keyIndex(key: string) {
   if (key === "home") return 0;
   if (key === "businesses") return 1;
   if (key === "writing" || key.startsWith("writing:")) return 2;
+  if (key === "resources" || key.startsWith("resources:")) return 3;
   return 0;
 }
 
@@ -267,6 +268,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     router.prefetch("/");
     router.prefetch("/businesses");
     router.prefetch("/blog");
+    router.prefetch("/resources");
   }, [router]);
 
   return (

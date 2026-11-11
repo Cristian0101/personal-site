@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { BuildingBoard } from "@/components/site/BuildingBoard";
 import { businesses, parentCompany } from "@/lib/businesses";
+import { graphSchema, PERSON_ID, personSchema, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Businesses — Northmark Industries",
@@ -11,8 +12,30 @@ export const metadata: Metadata = {
 };
 
 export default function BusinessesPage() {
+  const linkedBusinesses = businesses.filter((business) => business.href);
+  const schema = graphSchema(
+    personSchema,
+    {
+      "@type": "CollectionPage",
+      "@id": `${SITE_URL}/businesses#collection-page`,
+      url: `${SITE_URL}/businesses`,
+      name: "Businesses — Northmark Industries",
+      about: { "@id": PERSON_ID },
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: linkedBusinesses.map((business, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: business.name,
+          url: business.href,
+        })),
+      },
+    },
+  );
+
   return (
     <main id="main" className="doc businesses-doc">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <header className="page-intro">
         <p className="blog-doc__label">Parent Company &amp; Ventures</p>
         <h1>Businesses</h1>

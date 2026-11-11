@@ -28,6 +28,7 @@ import { LiveClock } from "@/components/portfolio/LiveClock";
 import { IntoDeck } from "@/components/site/IntoDeck";
 import { StoryFold } from "@/components/site/StoryFold";
 import { businesses } from "@/lib/businesses";
+import { graphSchema, PERSON_ID, personSchema, SITE_URL } from "@/lib/seo";
 
 const journey = [
   {
@@ -339,8 +340,23 @@ function DocItem({
 }
 
 export default function Home() {
+  const profileSchema = graphSchema(
+    personSchema,
+    {
+      "@type": "ProfilePage",
+      "@id": `${SITE_URL}/#profile-page`,
+      url: SITE_URL,
+      name: "Cristian Sanchez-Aguilera — Founder, Builder & GTM Operator",
+      mainEntity: { "@id": PERSON_ID },
+    },
+  );
+
   return (
     <main id="main" className="doc">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchema) }}
+      />
       <header className="doc-head">
         <div className="doc-head__identity">
           <h1>Cristian Sanchez-Aguilera</h1>
@@ -435,6 +451,9 @@ export default function Home() {
             <Link className="story-link" href="/blog/take-a-walk-with-me">
               Read the full story
             </Link>
+          </p>
+          <p>
+            Preparing for your own first tech sales interview? <Link className="story-link" href="/resources/interview-prep-scorecard">Get the free Interview Prep Scorecard</Link>.
           </p>
               </>
             }

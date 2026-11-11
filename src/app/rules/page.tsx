@@ -1,6 +1,18 @@
-'use client'
-
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { graphSchema, PERSON_ID, personSchema, SITE_URL } from '@/lib/seo'
+
+export const metadata: Metadata = {
+  title: '29 Things I Know So Far — Cristian Sanchez-Aguilera',
+  description: 'Principles Cristian Sanchez-Aguilera has collected from doing, failing, and paying attention.',
+  alternates: { canonical: '/rules' },
+  openGraph: {
+    title: '29 Things I Know So Far',
+    description: 'Principles collected from doing, failing, and paying attention.',
+    url: `${SITE_URL}/rules`,
+    type: 'article',
+  },
+}
 
 const rules = [
   "When in a hole, sometimes the way out is digging deeper. Parry the punches.",
@@ -35,8 +47,22 @@ const rules = [
 ]
 
 export default function RulesPage() {
+  const schema = graphSchema(
+    personSchema,
+    {
+      '@type': 'Article',
+      '@id': `${SITE_URL}/rules#article`,
+      headline: '29 Things I Know So Far',
+      description: 'Principles collected from doing, failing, and paying attention.',
+      url: `${SITE_URL}/rules`,
+      mainEntityOfPage: `${SITE_URL}/rules`,
+      publisher: { '@id': PERSON_ID },
+    },
+  )
+
   return (
     <main id="main" className="rules-doc">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Link href="/blog" className="blog-back">
         ← Writing
       </Link>
