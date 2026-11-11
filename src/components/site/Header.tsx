@@ -46,7 +46,7 @@ export function Header() {
   }, [pathname]);
 
   return (
-    <header className="masthead">
+    <header className={`masthead${pathname === "/resources" ? " masthead--resources" : ""}`}>
       <a href="#main" className="skip-link">
         Skip to content
       </a>
