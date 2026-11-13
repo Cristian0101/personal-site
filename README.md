@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+Northmark Press product configuration, payment setup, private delivery, launch gates, and acceptance checks are documented in [PLAYBOOK_COMMERCE.md](docs/PLAYBOOK_COMMERCE.md). All five playbooks currently have purchasing disabled.
+
 ## Getting Started
 
 First, run the development server:

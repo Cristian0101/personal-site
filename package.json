@@ -14,16 +14,22 @@
     "test:resource-saving": "node scripts/test-resource-saving.mjs",
     "build:tam-worksheet": "node scripts/build-tam-worksheet.mjs",
     "build:cold-call-scorecard": "node scripts/build-cold-call-scorecard.mjs",
-    "build:cold-email-checklist": "node scripts/build-cold-email-checklist.mjs"
+    "build:cold-email-checklist": "node scripts/build-cold-email-checklist.mjs",
+    "test:commerce": "node scripts/test-commerce.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:playbooks": "node scripts/test-playbooks.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1167.0",
     "@phosphor-icons/react": "^2.1.10",
     "framer-motion": "^12.34.3",
     "geist": "^1.7.0",
-    "next": "16.1.6",
+    "next": "16.4.6",
     "next-themes": "^0.4.6",
+    "postgres": "^4.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "stripe": "^23.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -32,7 +38,7 @@
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "16.4.6",
     "playwright": "1.64.0",
     "tailwindcss": "^4",
     "typescript": "^5"

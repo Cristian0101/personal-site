@@ -114,6 +114,7 @@ export function Customize() {
       <button
         type="button"
         className="customize__trigger"
+        aria-label="Customize appearance"
         aria-haspopup="true"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}

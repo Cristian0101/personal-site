@@ -8,6 +8,7 @@ import { PageTransition } from "@/components/site/PageTransition";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 import "./fonts.css";
+import "./playbooks.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
