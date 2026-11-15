@@ -60,7 +60,7 @@ if (coverArg) {
 
 // Static TrueType instances embed cleanly in PDF (variable fonts become Type 3). Generated from the
 // site's bundled OFL fonts into a gitignored cache; falls back to the variable files if unavailable.
-const staticFontDir = path.join(root, 'private-work/northmark-press/fonts-static');
+const staticFontDir = path.join(root, 'private-work/northmark-press/fonts-static-v2');
 if (!existsSync(path.join(staticFontDir, 'fonts.css'))) {
   try {
     execFileSync('python3', ['-I', path.join(here, 'make_static_fonts.py'), path.join(root, 'public/fonts'), staticFontDir], { stdio: 'inherit' });
