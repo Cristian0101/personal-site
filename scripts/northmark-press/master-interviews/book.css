@@ -144,6 +144,7 @@ ul.checklist li::before { content: ""; position: absolute; left: 0; top: 2.6pt; 
 .band .ch-kicker { position: absolute; top: 0.5in; left: var(--margin-x); font-size: 6.6pt; letter-spacing: .26em; text-transform: uppercase; color: #9aa4b1; }
 .band .ch-num { position: absolute; top: 0.74in; left: var(--margin-x); font-family: var(--serif); font-weight: 400; font-size: 58pt; line-height: 1; color: var(--icy); }
 .band .ch-title { position: absolute; left: var(--margin-x); right: 2.2in; bottom: 0.88in; font-family: var(--serif); font-weight: 500; font-size: 27pt; line-height: 1.08; letter-spacing: -0.01em; color: #f6f4ef; margin: 0; }
+.band .ch-title.long { right: 1.3in; font-size: 24pt; }
 .band .ch-builds { position: absolute; left: var(--margin-x); right: var(--margin-x); bottom: 0.42in; font-size: 7.6pt; color: #c9d3dd; letter-spacing: .02em; border-top: 0.6pt solid #3a3f48; padding-top: 7pt; }
 .band .ch-builds span { font-size: 6.4pt; letter-spacing: .22em; text-transform: uppercase; color: var(--icy); font-weight: 600; margin-right: 8pt; }
 .page.opener .runhead { display: none; }

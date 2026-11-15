@@ -150,7 +150,7 @@ try {
           </svg>
           <div class="ch-kicker">Chapter ${chapter.num} of ${chapterCount}</div>
           <div class="ch-num">${romanCh(chapter.num)}</div>
-          <h1 class="ch-title">${chapter.title.replace(/&/g, '&amp;')}</h1>
+          <h1 class="ch-title${chapter.title.length > 34 ? ' long' : ''}">${chapter.title.replace(/&/g, '&amp;')}</h1>
           <div class="ch-builds"><span>You will build</span>${chapter.builds}</div>`;
         sec.insertBefore(band, body);
         outline.push({ title: `${chapter.num}. ${chapter.title}`, page: n, level: 0 });
