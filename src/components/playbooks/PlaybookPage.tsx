@@ -4,7 +4,6 @@ import type { CSSProperties } from "react";
 import { formatPrice, playbookPath, priceValue, type Playbook } from "@/lib/playbooks";
 import { SITE_URL } from "@/lib/seo";
 import { PreviewGallery } from "./PreviewGallery";
-import { ProductView } from "./ProductView";
 import { PurchaseControl } from "./PurchaseControl";
 
 export function PlaybookPage({ book, canPurchase }: { book: Playbook; canPurchase: boolean }) {
@@ -18,7 +17,6 @@ export function PlaybookPage({ book, canPurchase }: { book: Playbook; canPurchas
   };
   return <main id="main" className="book-page" style={{ "--book-accent": book.accent, "--book-accent-border": book.accentBorder || "#7197b3" } as CSSProperties}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
-    <ProductView slug={book.slug} />
     <div className="book-breadcrumb"><Link href="/resources">← All resources</Link><span>Northmark Press <span aria-hidden="true">/</span> {book.collectionNumber}</span></div>
     <section className="book-hero" aria-labelledby="book-title">
       <figure className="book-hero__visual"><div className="book-hero__artwork"><Image {...book.cover} alt={book.cover.alt} sizes="(max-width: 767px) 100vw, 55vw" quality={92} preload /></div><figcaption>Digital edition <span aria-hidden="true">—</span> hardcover shown for presentation</figcaption></figure>

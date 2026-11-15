@@ -8,11 +8,10 @@ export type Playbook = {
   accent: string;
   accentBorder?: string;
   price: { amount: number; currency: string; approved: boolean };
-  checkoutPriceEnv: string;
+  polarProductEnv: string;
   status: "preparation" | "published";
   purchaseEnabled: boolean;
   finalPdfApproved: boolean;
-  fileKeyEnv: string;
   format: string;
   delivery: string;
   collectionNumber: string;
@@ -43,11 +42,10 @@ export const playbooks: Playbook[] = [{
   },
   accent: "#a9cce5",
   price: { amount: 3900, currency: "usd", approved: false },
-  checkoutPriceEnv: "MASTER_INTERVIEWS_STRIPE_PRICE_ID",
+  polarProductEnv: "MASTER_INTERVIEWS_POLAR_PRODUCT_ID",
   status: "preparation",
   purchaseEnabled: false,
   finalPdfApproved: false,
-  fileKeyEnv: "MASTER_INTERVIEWS_FILE_KEY",
   format: "Digital playbook · PDF",
   delivery: "In preparation. Digital edition; no physical book is included.",
   collectionNumber: "01",
@@ -111,8 +109,7 @@ export const playbooks: Playbook[] = [{
     "height": 1436,
     "alt": "Approved SDR/BDR Job Mastery hardcover mockup showing the full cover and spine. The product is a digital playbook."
   },
-  "checkoutPriceEnv": "SDR_BDR_JOB_MASTERY_STRIPE_PRICE_ID",
-  "fileKeyEnv": "SDR_BDR_JOB_MASTERY_FILE_KEY",
+  "polarProductEnv": "SDR_BDR_JOB_MASTERY_POLAR_PRODUCT_ID",
   "collectionNumber": "02",
   "outcomeHeading": "Don't just land the role. Learn to master it.",
   "contentsEyebrow": "From daily habits to career growth",
@@ -207,8 +204,7 @@ export const playbooks: Playbook[] = [{
     "height": 1452,
     "alt": "Approved Break Up Your TAM hardcover mockup showing the full cover and spine. The product is a digital playbook."
   },
-  "checkoutPriceEnv": "BREAK_UP_YOUR_TAM_STRIPE_PRICE_ID",
-  "fileKeyEnv": "BREAK_UP_YOUR_TAM_FILE_KEY",
+  "polarProductEnv": "BREAK_UP_YOUR_TAM_POLAR_PRODUCT_ID",
   "collectionNumber": "03",
   "outcomeHeading": "Stop working every account. Start working the right ones.",
   "contentsEyebrow": "From market definition to territory execution",
@@ -289,11 +285,10 @@ export const playbooks: Playbook[] = [{
   accent: "#1be2f6",
   accentBorder: "#1164c8",
   price: { amount: 3900, currency: "usd", approved: false },
-  checkoutPriceEnv: "SCIENCE_COLD_CALL_STRIPE_PRICE_ID",
+  polarProductEnv: "SCIENCE_COLD_CALL_POLAR_PRODUCT_ID",
   status: "preparation",
   purchaseEnabled: false,
   finalPdfApproved: false,
-  fileKeyEnv: "SCIENCE_COLD_CALL_FILE_KEY",
   format: "Digital playbook · PDF",
   delivery: "In preparation. Digital edition; no physical book is included.",
   collectionNumber: "04",
@@ -339,11 +334,10 @@ export const playbooks: Playbook[] = [{
   accent: "#badd49",
   accentBorder: "#126b48",
   price: { amount: 3900, currency: "usd", approved: false },
-  checkoutPriceEnv: "SCIENCE_COLD_EMAIL_STRIPE_PRICE_ID",
+  polarProductEnv: "SCIENCE_COLD_EMAIL_POLAR_PRODUCT_ID",
   status: "preparation",
   purchaseEnabled: false,
   finalPdfApproved: false,
-  fileKeyEnv: "SCIENCE_COLD_EMAIL_FILE_KEY",
   format: "Digital playbook · PDF",
   delivery: "In preparation. Digital edition; no physical book is included.",
   collectionNumber: "05",

@@ -20,16 +20,13 @@
     "test:playbooks": "node scripts/test-playbooks.mjs"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1167.0",
     "@phosphor-icons/react": "^2.1.10",
     "framer-motion": "^12.34.3",
     "geist": "^1.7.0",
     "next": "16.4.6",
     "next-themes": "^0.4.6",
-    "postgres": "^4.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "stripe": "^23.1.0"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -1,21 +1,29 @@
-import type Stripe from "stripe";
+import type { Playbook } from "../playbooks";
 
-export type Order = { session_id: string; slug: string; price_id: string; amount: number; currency: string; file_key: string; livemode: boolean };
-export type Purchase = Order & { email: string; payment_intent_id: string; created_at: Date; access_expires_at: Date; email_sent_at: Date | null; revoked: boolean };
+// Minimal shapes of the Polar API objects we read (API version 2026-10).
+export type PolarProduct = {
+  id: string; is_archived: boolean; is_recurring: boolean;
+  prices: { amount_type: string; price_amount?: number; price_currency?: string; is_archived: boolean }[];
+  benefits: { type: string }[];
+};
+export type PolarCheckout = { id: string; url: string; status: "open" | "expired" | "confirmed" | "succeeded" | "failed"; metadata?: Record<string, unknown> };
+export const CHECKOUT_APP = "northmark-playbooks";
 
-export function verifiedPayment(session: Stripe.Checkout.Session, order: Order): { email: string; paymentIntent: string } | null {
-  const lines = session.line_items;
-  const email = session.customer_details?.email?.trim().toLowerCase();
-  const paymentIntent = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id;
-  if (session.id !== order.session_id || session.mode !== "payment" || session.status !== "complete" || session.payment_status !== "paid"
-    || session.livemode !== order.livemode || session.amount_total !== order.amount || session.currency !== order.currency
-    || session.metadata?.app !== "northmark-playbooks" || session.metadata?.slug !== order.slug
-    || !lines || lines.has_more || lines.data.length !== 1 || lines.data[0].price?.id !== order.price_id || lines.data[0].quantity !== 1
-    || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !paymentIntent) return null;
-  return { email, paymentIntent };
+/** The Polar product must be a live one-time product whose only active price matches the page, and it must deliver a file. */
+export function productMatches(product: PolarProduct, book: Pick<Playbook, "price">, productId: string) {
+  const active = product.prices.filter(price => !price.is_archived);
+  return product.id === productId && !product.is_archived && !product.is_recurring && active.length === 1
+    && active[0].amount_type === "fixed" && active[0].price_amount === book.price.amount
+    && active[0].price_currency?.toLowerCase() === book.price.currency
+    && product.benefits.some(benefit => benefit.type === "downloadables");
 }
 
-export function hasReversedPayment(intent: Stripe.PaymentIntent) {
-  const charge = typeof intent.latest_charge === "object" ? intent.latest_charge : null;
-  return intent.status !== "succeeded" || !charge || charge.refunded || charge.amount_refunded > 0 || charge.disputed;
+/** Only redirect buyers to Polar-hosted checkout pages over HTTPS. */
+export function checkoutUrlAllowed(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && (url.hostname === "polar.sh" || url.hostname.endsWith(".polar.sh")) && !url.username && !url.password;
+  } catch { return false; }
 }
+
+export function validCheckoutId(id: string) { return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id); }

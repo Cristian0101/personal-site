@@ -90,12 +90,9 @@
 .book-preview-dialog p { margin-top: 12px; font: 12px/1.6 var(--font-sans); }
 .commerce-page { max-width: 620px; padding: 70px 24px; margin: auto; color: var(--text); white-space: normal; }
 .commerce-page h1 { font: 400 42px/1.1 var(--font-display); letter-spacing: -.03em; margin: 20px 0; }
-.commerce-page p { line-height: 1.7; }
+.commerce-page p { line-height: 1.7; margin: 0 0 14px; }
+.commerce-page h2 { font: 500 15px/1.4 var(--font-sans); margin: 34px 0 6px; }
 .commerce-page a { color: var(--text); text-underline-offset: 4px; }
-.commerce-page form { margin-top: 26px; }
-.commerce-page label { display: block; font: 12px/1.6 var(--font-sans); margin-bottom: 9px; }
-.commerce-page input { width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--text); padding: 13px; margin-bottom: 12px; border-radius: 2px; font: 14px var(--font-sans); }
-.commerce-page .book-button { margin-top: 12px; }
 @media (max-width: 1000px) {
   .book-hero { gap: 30px; grid-template-columns: 1fr 1fr; padding-top: 40px; }
   .book-section { gap: 40px; }
