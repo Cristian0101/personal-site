@@ -48,7 +48,10 @@ let coverHtml;
 if (coverArg) {
   const coverPath = path.resolve(coverArg);
   if (!existsSync(coverPath)) throw new Error(`Cover not found: ${coverPath}`);
-  coverHtml = `<section class="page cover" data-page="1" data-type="cover"><img class="cover-art" src="${pathToFileURL(coverPath)}" alt="Master Interviews front cover">${proof && coverNote ? `<div class="cover-note">${coverNote.replace(/</g, '&lt;')}</div>` : ''}</section>`;
+  // A one-page PDF cover (vector type) replaces page 1 after export; an image cover is placed directly.
+  coverHtml = coverPath.endsWith('.pdf')
+    ? `<section class="page cover" data-page="1" data-type="cover"></section>`
+    : `<section class="page cover" data-page="1" data-type="cover"><img class="cover-art" src="${pathToFileURL(coverPath)}" alt="Master Interviews front cover">${proof && coverNote ? `<div class="cover-note">${coverNote.replace(/</g, '&lt;')}</div>` : ''}</section>`;
 } else {
   if (!proof) throw new Error('No approved flat cover supplied. Use --cover <file>, or --proof for an internal proof.');
   coverHtml = `<section class="page cover" data-page="1" data-type="cover"><div class="cover-slot"><p class="slot-label">Production proof · page 1 reserved</p><p>The approved flat Master Interviews front cover is inserted here at final production. It is not recreated or approximated in this proof.</p></div></section>`;
@@ -276,7 +279,7 @@ if (over.length) console.log('OVERFLOW:', JSON.stringify(over));
 if (under.length) console.log('Underfilled (<72%):', under.map(m => `p${m.page}(${m.fill})`).join(' '));
 
 const finalPdf = path.join(buildDir, proof ? 'Master-Interviews-PROOF.pdf' : 'Master-Interviews.pdf');
-execFileSync('python3', ['-I', path.join(here, 'finalize_pdf.py'), path.join(buildDir, 'book.raw.pdf'), finalPdf, path.join(buildDir, 'layout-report.json'), proof ? 'proof' : 'final'], { stdio: 'inherit' });
+execFileSync('python3', ['-I', path.join(here, 'finalize_pdf.py'), path.join(buildDir, 'book.raw.pdf'), finalPdf, path.join(buildDir, 'layout-report.json'), proof ? 'proof' : 'final', ...(coverArg && coverArg.endsWith('.pdf') ? [path.resolve(coverArg)] : [])], { stdio: 'inherit' });
 await rm(path.join(buildDir, 'book.raw.pdf'));
 
 await rm(renderDir, { recursive: true, force: true });

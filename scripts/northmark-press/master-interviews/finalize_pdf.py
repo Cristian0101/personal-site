@@ -1,6 +1,7 @@
 """Add bookmarks and document metadata to the Master Interviews PDF.
 
-Usage: python3 -I finalize_pdf.py <raw.pdf> <out.pdf> <layout-report.json> <proof|final>
+Usage: python3 -I finalize_pdf.py <raw.pdf> <out.pdf> <layout-report.json> <proof|final> [cover.pdf]
+With cover.pdf, its first page replaces page 1 (keeps the cover's vector type).
 """
 import json
 import sys
@@ -8,10 +9,18 @@ import sys
 from pypdf import PdfReader, PdfWriter
 
 raw, out, report_path, mode = sys.argv[1:5]
+cover_pdf = sys.argv[5] if len(sys.argv) > 5 else None
 report = json.load(open(report_path, encoding="utf-8"))
 
 reader = PdfReader(raw)
 writer = PdfWriter(clone_from=reader)
+if cover_pdf:
+    cover_page = PdfReader(cover_pdf).pages[0]
+    box = writer.pages[0].mediabox
+    if (round(float(cover_page.mediabox.width)), round(float(cover_page.mediabox.height))) != (round(float(box.width)), round(float(box.height))):
+        raise SystemExit("Cover PDF page size does not match the book page size")
+    writer.insert_page(cover_page, 0)
+    writer.remove_page(1)
 writer.page_mode = "/UseOutlines"
 
 parents = {}

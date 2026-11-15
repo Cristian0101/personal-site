@@ -42,10 +42,23 @@ Outputs (all private): `build/Master-Interviews[-PROOF].pdf`, `build/book.html` 
 
 ## Cover
 
-The approved flat front cover is not in this repository; only `public/playbooks/master-interviews/mockup.webp` (a photographed hardcover presentation mockup) exists. The cover must not be recreated or approximated. Supply the original flat artwork (and editable source if available) and pass it with `--cover`.
+The approved flat front cover is not in this repository; only `public/playbooks/master-interviews/mockup.webp` (a photographed hardcover presentation mockup) exists.
 
-### Provisional cover
-Cristian confirmed (2026-11-15) that no flat original exists and approved a provisional cover derived from the mockup: the front board is cropped from `mockup.webp`, the photographed hinge trimmed, plain background extended to 3:4, and upscaled to 2250 × 3000 without changing any design element. It lives in the private workspace (`cover/`). Proof builds can label it with `--cover-note "…"`. Its true detail is about 116 ppi at full page, so a re-export from the original design tool is still preferable.
+### Provisional cover (superseded)
+Cristian confirmed (2026-11-15) that no flat original exists and approved a provisional cover derived from the mockup (front board cropped, hinge trimmed, background extended to 3:4, upscaled to 2250 × 3000). Its true detail was only about 116 ppi and the author photo was soft.
+
+### 4K rebuild (current)
+At Cristian's request (2026-11-15) the cover was rebuilt at 4K from the approved design, keeping its layout, wording, colours and branding:
+
+- Source: `private-work/northmark-press/master-interviews/cover/src/cover.html` (one SVG, 7.5 × 10 in). Not in Git; the persistent copy is in the project folder.
+- Background (sky gradient, planet arc glow, grain) is rendered once to a 3000 × 4000 JPEG; all type stays vector (Montserrat, OFL, closest match to the original geometric sans) and the author photo is Cristian's HD headshot.
+- Render: `node scripts/northmark-press/master-interviews/build_cover.mjs` writes `cover/master-interviews-cover-3000x4000.png` and `cover/master-interviews-cover.pdf`.
+- Build with it: pass the cover PDF to `--cover`; `finalize_pdf.py` swaps it in as page 1 so the cover type stays vector in the book.
+
+```bash
+node scripts/northmark-press/master-interviews/build_cover.mjs
+node scripts/northmark-press/master-interviews/build.mjs --proof --cover private-work/northmark-press/master-interviews/cover/master-interviews-cover.pdf
+```
 
 ## Launch gates (unchanged)
 
