@@ -23,8 +23,6 @@ try {
     const page = await context.newPage(), errors = [];
     page.on('pageerror', e => errors.push(e.message));
     page.on('console', e => { if (e.type() === 'error') errors.push(e.text()); });
-    const viewSlugs = [];
-    page.on('request', req => { if (req.url().endsWith('/api/commerce/events') && req.method() === 'POST') viewSlugs.push(req.postDataJSON().slug); });
     await page.goto(base + '/resources/' + book.slug);
     await page.evaluate(() => document.fonts.ready);
     await page.locator('.book-hero__visual img').waitFor();
@@ -41,7 +39,6 @@ try {
     ok((await page.locator('meta[property="og:image"]').getAttribute('content')).endsWith('/playbooks/' + book.slug + '/mockup.webp'));
     const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
     ok(schema['@type'] === 'Product' && schema.name === book.title && !schema.offers && !schema.aggregateRating);
-    ok(viewSlugs.includes(book.slug), 'Product-specific view event');
     ok(await page.locator('h1').evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'Long titles fit their column');
     ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Product overflow at ${width}/${theme}`);
     const image = await page.locator('.book-hero__visual img').evaluate(img => ({ w: img.clientWidth, h: img.clientHeight, nw: img.naturalWidth, nh: img.naturalHeight, fit: getComputedStyle(img).objectFit }));
@@ -98,19 +95,15 @@ try {
   }
   for (const book of books) ok((await api.post(`${base}/api/commerce/checkout`, { data: { slug: book.slug, amount: 1 } })).status() === 503);
   ok((await api.post(`${base}/api/commerce/checkout`, { data: { slug: 'not-a-product' } })).status() === 503);
-  ok((await api.post(`${base}/api/commerce/download`, { headers: { origin: base, authorization: 'Bearer forged' } })).status() === 401);
-  ok((await api.post(`${base}/api/commerce/download`, { headers: { origin: 'https://untrusted.example' } })).status() === 403);
-  ok((await api.get(`${base}/api/commerce/status?session_id=forged`)).status() === 400);
+  for (const gone of ['download', 'recover', 'events', 'webhook']) ok((await api.post(`${base}/api/commerce/${gone}`, { headers: { origin: base } })).status() === 404);
   ok((await api.get(`${base}/resources/unknown-playbook`)).status() === 404);
   const page = await request.newPage();
-  await page.goto(`${base}/resources/purchase/success?session_id=forged`);
-  await page.getByRole('heading', { name: "We couldn't find that purchase." }).waitFor();
-  ok(await page.getByRole('link', { name: 'Recover purchase access →' }).isVisible());
+  await page.goto(`${base}/resources/purchase/success?checkout_id=forged`);
+  ok(await page.getByRole('heading', { name: "We couldn't find that purchase." }).isVisible());
+  ok(await page.getByRole('link', { name: 'Help with your purchase →' }).isVisible());
   ok(await page.locator('meta[name="robots"]').getAttribute('content').then(c => c.includes('noindex')));
-  await page.goto(`${base}/resources/purchase/cancelled`);
-  ok(await page.getByRole('heading', { name: 'Checkout closed.' }).isVisible());
   await page.goto(`${base}/resources/access`);
-  ok(await page.getByRole('button', { name: 'Email my access link' }).count() === 0);
+  ok(await page.getByRole('heading', { name: 'Download your PDF again' }).isVisible());
   ok(await page.getByText('Purchasing is not open yet.', { exact: false }).isVisible());
   await request.close();
   console.log(`PASS: ${checks} product/browser checks for all five books at 390/768/1440px in light/dark, appearance controls, resource filters/navigation, five free downloads, launch gates and access states. Screenshots: ${output}`);
