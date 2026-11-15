@@ -63,3 +63,19 @@ node scripts/northmark-press/master-interviews/build.mjs --proof --cover private
 ## Launch gates (unchanged)
 
 This pipeline does not touch `src/lib/playbooks.ts` commerce flags. `purchaseEnabled`, `finalPdfApproved`, `price.approved`, and `status` stay as they are until Cristian approves the final edition and the sandbox flow in `docs/PLAYBOOK_COMMERCE.md` has passed end to end.
+
+## Other titles (shared pipeline)
+
+The same scripts build every Northmark Press title. Each title has a small public config in `scripts/northmark-press/books/<slug>.json` (title, subtitle, metadata, page count, accent palette, opener arc colours; no paid content) and its own private workspace at `private-work/northmark-press/<slug>/` with the same layout (`spec/`, `manuscript/`, `cover/src/`, `build/`, `renders/`).
+
+```bash
+# Break Up Your TAM (collection no. 03)
+node scripts/northmark-press/master-interviews/build_cover.mjs --book break-up-your-tam
+node scripts/northmark-press/master-interviews/build.mjs --book break-up-your-tam --proof \
+  --cover private-work/northmark-press/break-up-your-tam/cover/break-up-your-tam-cover.pdf
+python3 -I scripts/northmark-press/master-interviews/qa_pdf.py private-work/northmark-press/break-up-your-tam/build/Break-Up-Your-TAM-PROOF.pdf
+```
+
+Without `--book` the scripts build Master Interviews, as before. Chapter count, front/back-matter ranges, contents entries, and the dark last page are derived from the manuscript's `data-type` attributes instead of fixed page numbers.
+
+Covers for later titles follow the approach Cristian approved for Master Interviews: a 4K SVG rebuild of the approved mockup (vector Montserrat type, bitmap background rendered at 3000 × 4000) with his HD headshot and the "Cristian Sanchez / Founder, Outflow" byline, which he asked to include on every title (2026-11-15).

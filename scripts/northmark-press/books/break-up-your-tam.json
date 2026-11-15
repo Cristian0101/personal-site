@@ -1,0 +1,19 @@
+{
+  "slug": "break-up-your-tam",
+  "title": "Break Up Your TAM",
+  "subtitle": "A Practical Playbook for Identifying, Prioritizing, and Converting the Right Accounts",
+  "author": "Cristian Sanchez",
+  "collectionNumber": "03",
+  "pdfName": "Break-Up-Your-TAM",
+  "pages": 44,
+  "subject": "Territory strategy for SDRs, BDRs, and AEs: TAM, SAM and ICP, account scoring and tiering, target account lists, buying signals, multi-threaded account plays, and weekly territory reviews.",
+  "keywords": "TAM, SAM, ICP, territory planning, account prioritization, account scoring, buying signals, account-based outreach, SDR, BDR, Northmark Press",
+  "palette": {
+    "--charcoal": "#15121b",
+    "--ink": "#1d1925",
+    "--icy": "#c9a2f2",
+    "--icy-tint": "#f4eefa",
+    "--icy-deep": "#7a44a8"
+  },
+  "arc": { "stop": "#b07ae6", "highlight": "#e6d2fa" }
+}

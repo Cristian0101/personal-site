@@ -1,11 +1,12 @@
 /**
- * Northmark Press — Master Interviews PDF build.
+ * Northmark Press — book PDF build (shared by every title in the collection).
  *
  * Usage:
- *   node scripts/northmark-press/master-interviews/build.mjs [--proof] [--cover path/to/flat-cover.png]
+ *   node scripts/northmark-press/master-interviews/build.mjs [--book <slug>] [--proof] [--cover path/to/cover.pdf|png]
  *
+ * --book   title config in scripts/northmark-press/books/<slug>.json (default: master-interviews).
  * Reads the private, gitignored manuscript from
- *   private-work/northmark-press/master-interviews/manuscript/{front,ch1..ch6,back}.html
+ *   private-work/northmark-press/<slug>/manuscript/{front,ch1..ch6,back}.html
  * and writes everything to private-work/.../build and renders/. Nothing paid is written to public/ or Git.
  *
  * --proof  allows [[FLAG: …]] markers (highlighted) and the reserved cover slot.
@@ -28,7 +29,10 @@ const proof = args.includes('--proof');
 const coverArg = args.includes('--cover') ? args[args.indexOf('--cover') + 1] : null;
 // --cover-note "text": small proof-only label on page 1 (e.g. to mark a provisional cover)
 const coverNote = args.includes('--cover-note') ? args[args.indexOf('--cover-note') + 1] : null;
-const ws = path.join(root, 'private-work/northmark-press/master-interviews');
+const bookSlug = args.includes('--book') ? args[args.indexOf('--book') + 1] : 'master-interviews';
+const book = JSON.parse(await readFile(path.join(here, '../books', `${bookSlug}.json`), 'utf8'));
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const ws = path.join(root, 'private-work/northmark-press', book.slug);
 const manuscriptDir = args.includes('--manuscript') ? path.resolve(args[args.indexOf('--manuscript') + 1]) : path.join(ws, 'manuscript');
 const buildDir = path.join(ws, 'build');
 const renderDir = path.join(ws, 'renders');
@@ -51,10 +55,10 @@ if (coverArg) {
   // A one-page PDF cover (vector type) replaces page 1 after export; an image cover is placed directly.
   coverHtml = coverPath.endsWith('.pdf')
     ? `<section class="page cover" data-page="1" data-type="cover"></section>`
-    : `<section class="page cover" data-page="1" data-type="cover"><img class="cover-art" src="${pathToFileURL(coverPath)}" alt="Master Interviews front cover">${proof && coverNote ? `<div class="cover-note">${coverNote.replace(/</g, '&lt;')}</div>` : ''}</section>`;
+    : `<section class="page cover" data-page="1" data-type="cover"><img class="cover-art" src="${pathToFileURL(coverPath)}" alt="${esc(book.title)} front cover">${proof && coverNote ? `<div class="cover-note">${coverNote.replace(/</g, '&lt;')}</div>` : ''}</section>`;
 } else {
   if (!proof) throw new Error('No approved flat cover supplied. Use --cover <file>, or --proof for an internal proof.');
-  coverHtml = `<section class="page cover" data-page="1" data-type="cover"><div class="cover-slot"><p class="slot-label">Production proof · page 1 reserved</p><p>The approved flat Master Interviews front cover is inserted here at final production. It is not recreated or approximated in this proof.</p></div></section>`;
+  coverHtml = `<section class="page cover" data-page="1" data-type="cover"><div class="cover-slot"><p class="slot-label">Production proof · page 1 reserved</p><p>The approved ${esc(book.title)} front cover is inserted here at final production. It is not recreated or approximated in this proof.</p></div></section>`;
 }
 
 // Static TrueType instances embed cleanly in PDF (variable fonts become Type 3). Generated from the
@@ -69,7 +73,8 @@ const fontsCss = existsSync(path.join(staticFontDir, 'fonts.css'))
   ? (await readFile(path.join(staticFontDir, 'fonts.css'), 'utf8')).replace(/url\(([^)]+)\)/g, (_, f) => `url(${pathToFileURL(path.join(staticFontDir, f))})`)
   : (await readFile(path.join(root, 'src/app/fonts.css'), 'utf8'))
     .replace(/url\(\/fonts\/([^)]+)\)/g, (_, f) => `url(${pathToFileURL(path.join(root, 'public/fonts', f))})`);
-const bookCss = await readFile(path.join(here, 'book.css'), 'utf8');
+const paletteCss = Object.keys(book.palette || {}).length ? `:root{${Object.entries(book.palette).map(([k, v]) => `${k}:${v}`).join(';')}}` : '';
+const bookCss = (await readFile(path.join(here, 'book.css'), 'utf8')) + '\n' + paletteCss;
 const chunks = {};
 for (const p of parts) chunks[p] = existsSync(path.join(manuscriptDir, `${p}.html`)) ? await readFile(path.join(manuscriptDir, `${p}.html`), 'utf8') : '';
 
@@ -79,7 +84,7 @@ const frontWithToc = chunks.front.replace(/(<section[^>]*data-page="4")/, `${toc
 if (!frontWithToc.includes('data-page="3"')) throw new Error('front.html must contain a section with data-page="4"');
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Master Interviews — The SDR/BDR Interview Preparation Playbook</title>
+<title>${esc(book.title)} — ${esc(book.subtitle)}</title>
 <style>${fontsCss}\n${bookCss}</style></head><body>
 ${coverHtml}
 ${frontWithToc}
@@ -99,12 +104,16 @@ try {
   await page.emulateMedia({ media: 'print' });
   await page.goto(pathToFileURL(sourcePath).href, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
-  report = await page.evaluate(() => {
+  report = await page.evaluate((book) => {
     const romanCh = n => String(n).padStart(2, '0');
     const pages = [...document.querySelectorAll('section.page')];
     const outline = [];
     const errors = [];
     let chapter = null;
+    const chapterCount = pages.filter(s => s.dataset.type === 'opener').length;
+    const firstOpener = Number(pages.find(s => s.dataset.type === 'opener')?.dataset.page || 5);
+    const backPages = pages.filter(s => s.dataset.type === 'back').map(s => Number(s.dataset.page));
+    const firstBack = backPages.length ? backPages[0] : pages.length + 1;
     pages.forEach((sec, i) => {
       const n = Number(sec.dataset.page);
       if (n !== i + 1) errors.push(`Section ${i + 1} has data-page=${sec.dataset.page}`);
@@ -116,9 +125,9 @@ try {
         chapter = { num: Number(sec.dataset.chapter), title: sec.dataset.chapterTitle, builds: sec.dataset.builds, page: n };
         sec.dataset.anchor = `ch${chapter.num}`;
       }
-      if (n === 42) chapter = null;
+      if (n === firstBack) chapter = null;
       if (n === 2) sec.classList.add('front-legal');
-      if (n === 44) sec.classList.add('dark');
+      if (n === pages.length && sec.dataset.type === 'back') sec.classList.add('dark');
 
       // Body wrapper
       const body = document.createElement('div');
@@ -133,13 +142,13 @@ try {
         band.innerHTML = `
           <svg class="arc" viewBox="0 0 750 362" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="g${n}" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#a9cce5" stop-opacity="0"/>
-              <stop offset=".55" stop-color="#a9cce5" stop-opacity=".55"/>
-              <stop offset="1" stop-color="#dcebf6" stop-opacity=".95"/></linearGradient></defs>
+              <stop offset="0" stop-color="${book.arc.stop}" stop-opacity="0"/>
+              <stop offset=".55" stop-color="${book.arc.stop}" stop-opacity=".55"/>
+              <stop offset="1" stop-color="${book.arc.highlight}" stop-opacity=".95"/></linearGradient></defs>
             <path d="M420 362 C 520 250, 630 170, 750 128" fill="none" stroke="url(#g${n})" stroke-width="1.6"/>
-            <path d="M470 362 C 560 270, 655 205, 750 172" fill="none" stroke="#a9cce5" stroke-opacity=".16" stroke-width="0.8"/>
+            <path d="M470 362 C 560 270, 655 205, 750 172" fill="none" stroke="${book.arc.stop}" stroke-opacity=".16" stroke-width="0.8"/>
           </svg>
-          <div class="ch-kicker">Chapter ${chapter.num} of 6</div>
+          <div class="ch-kicker">Chapter ${chapter.num} of ${chapterCount}</div>
           <div class="ch-num">${romanCh(chapter.num)}</div>
           <h1 class="ch-title">${chapter.title.replace(/&/g, '&amp;')}</h1>
           <div class="ch-builds"><span>You will build</span>${chapter.builds}</div>`;
@@ -152,8 +161,8 @@ try {
         const rh = document.createElement('div');
         rh.className = 'runhead';
         rh.setAttribute('aria-hidden', 'true');
-        const right = chapter ? `<span class="rh-ch">Chapter ${chapter.num}</span> · ${chapter.title}` : (n < 5 ? 'Front matter' : 'Back matter');
-        rh.innerHTML = `<span>Master Interviews</span><span>${right}</span>`;
+        const right = chapter ? `<span class="rh-ch">Chapter ${chapter.num}</span> · ${chapter.title}` : (n < firstOpener ? 'Front matter' : 'Back matter');
+        rh.innerHTML = `<span>${book.title}</span><span>${right}</span>`;
         sec.appendChild(rh);
       }
       const folio = document.createElement('div');
@@ -230,16 +239,14 @@ try {
     // Contents page
     const toc = document.querySelector('section.toc .body');
     const openers = pages.filter(s => s.dataset.type === 'opener');
-    const chapterEnd = idx => (idx + 1 < openers.length ? Number(openers[idx + 1].dataset.page) - 1 : 41);
+    const chapterEnd = idx => (idx + 1 < openers.length ? Number(openers[idx + 1].dataset.page) - 1 : firstBack - 1);
     const minor = (label, title, pg) => `<li class="minor"><a href="#p${pg}"><span class="t-num">${label}</span><span class="t-title">${title}</span><span class="t-page">${pg}</span></a></li>`;
     const h2Of = pg => document.querySelector(`#p${pg} h2`)?.textContent.trim() || '';
-    toc.innerHTML = `<div class="toc-title">Contents</div><div class="toc-sub">Master Interviews · The SDR/BDR Interview Preparation Playbook</div>
+    toc.innerHTML = `<div class="toc-title">Contents</div><div class="toc-sub">${book.title} · ${book.subtitle}</div>
       <ol class="toc-list">
         ${minor('', h2Of(4), 4)}
         ${openers.map((s, idx) => `<li><a href="#${s.id}"><span class="t-num">${romanCh(s.dataset.chapter)}</span><span class="t-title">${s.dataset.chapterTitle.replace(/&/g, '&amp;')}<span class="t-builds">You will build: ${s.dataset.builds}</span></span><span class="t-page">${s.dataset.page}–${chapterEnd(idx)}</span></a></li>`).join('')}
-        ${minor('', h2Of(42), 42)}
-        ${minor('', h2Of(43), 43)}
-        ${minor('', h2Of(44), 44)}
+        ${backPages.map(pg => minor('', h2Of(pg), pg)).join('')}
       </ol>`;
     toc.insertAdjacentHTML('afterbegin', '<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Contents</h2>');
     outline.splice(outline.findIndex(o => o.page === 4), 0, { title: 'Contents', page: 3, level: 0 });
@@ -261,7 +268,7 @@ try {
     });
     const flags = document.querySelectorAll('.flag').length;
     return { pageCount: pages.length, outline, errors, metrics, flags };
-  });
+  }, book);
 
   await writeFile(path.join(buildDir, 'book.composed.html'), await page.content());
   await page.pdf({ path: path.join(buildDir, 'book.raw.pdf'), preferCSSPageSize: true, printBackground: true, tagged: true, outline: false });
@@ -278,8 +285,8 @@ if (report.errors.length) console.log('Structure errors:\n ' + report.errors.joi
 if (over.length) console.log('OVERFLOW:', JSON.stringify(over));
 if (under.length) console.log('Underfilled (<72%):', under.map(m => `p${m.page}(${m.fill})`).join(' '));
 
-const finalPdf = path.join(buildDir, proof ? 'Master-Interviews-PROOF.pdf' : 'Master-Interviews.pdf');
-execFileSync('python3', ['-I', path.join(here, 'finalize_pdf.py'), path.join(buildDir, 'book.raw.pdf'), finalPdf, path.join(buildDir, 'layout-report.json'), proof ? 'proof' : 'final', ...(coverArg && coverArg.endsWith('.pdf') ? [path.resolve(coverArg)] : [])], { stdio: 'inherit' });
+const finalPdf = path.join(buildDir, proof ? `${book.pdfName}-PROOF.pdf` : `${book.pdfName}.pdf`);
+execFileSync('python3', ['-I', path.join(here, 'finalize_pdf.py'), path.join(buildDir, 'book.raw.pdf'), finalPdf, path.join(buildDir, 'layout-report.json'), proof ? 'proof' : 'final', path.join(here, '../books', `${bookSlug}.json`), ...(coverArg && coverArg.endsWith('.pdf') ? [path.resolve(coverArg)] : [])], { stdio: 'inherit' });
 await rm(path.join(buildDir, 'book.raw.pdf'));
 
 await rm(renderDir, { recursive: true, force: true });
@@ -287,6 +294,6 @@ await mkdir(renderDir, { recursive: true });
 execFileSync('pdftoppm', ['-r', '96', '-png', finalPdf, path.join(renderDir, 'page')]);
 console.log(`PDF: ${path.relative(root, finalPdf)}\nRenders: ${path.relative(root, renderDir)}`);
 
-if (!proof && (report.flags || report.errors.length || over.length || report.pageCount !== 44)) {
+if (!proof && (report.flags || report.errors.length || over.length || report.pageCount !== book.pages)) {
   throw new Error('Final build failed acceptance gates (flags, structure, overflow, or page count).');
 }

@@ -1,4 +1,4 @@
-"""Automated PDF checks for Master Interviews.
+"""Automated PDF checks for Northmark Press book PDFs.
 
 Usage: python3 -I qa_pdf.py <book.pdf> [expected_pages]
 Checks page count/size, metadata, bookmarks, contents-page link targets,

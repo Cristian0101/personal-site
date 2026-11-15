@@ -1,6 +1,6 @@
-"""Add bookmarks and document metadata to the Master Interviews PDF.
+"""Add bookmarks and document metadata to a Northmark Press book PDF.
 
-Usage: python3 -I finalize_pdf.py <raw.pdf> <out.pdf> <layout-report.json> <proof|final> [cover.pdf]
+Usage: python3 -I finalize_pdf.py <raw.pdf> <out.pdf> <layout-report.json> <proof|final> <book.json> [cover.pdf]
 With cover.pdf, its first page replaces page 1 (keeps the cover's vector type).
 """
 import json
@@ -9,7 +9,8 @@ import sys
 from pypdf import PdfReader, PdfWriter
 
 raw, out, report_path, mode = sys.argv[1:5]
-cover_pdf = sys.argv[5] if len(sys.argv) > 5 else None
+book = json.load(open(sys.argv[5], encoding="utf-8"))
+cover_pdf = sys.argv[6] if len(sys.argv) > 6 else None
 report = json.load(open(report_path, encoding="utf-8"))
 
 reader = PdfReader(raw)
@@ -33,12 +34,12 @@ for item in report["outline"]:
     if item["level"] == 0:
         parents["chapter"] = ref if item["title"][:1].isdigit() else None
 
-title = "Master Interviews: The SDR/BDR Interview Preparation Playbook"
+title = f"{book['title']}: {book['subtitle']}"
 writer.add_metadata({
     "/Title": title + (" (Production proof)" if mode == "proof" else ""),
-    "/Author": "Cristian Sanchez",
-    "/Subject": "SDR/BDR interview preparation: role research, company research, interview stories, answers, mock calls, and a seven-day preparation plan.",
-    "/Keywords": "SDR, BDR, tech sales, interview preparation, mock call, STAR, Northmark Press",
+    "/Author": book["author"],
+    "/Subject": book["subject"],
+    "/Keywords": book["keywords"],
     "/Creator": "Northmark Press production pipeline",
     "/Producer": "Chromium (Playwright) + pypdf",
 })
