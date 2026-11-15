@@ -189,3 +189,4 @@ ul.checklist li::before { content: ""; position: absolute; left: 0; top: 2.6pt; 
 /* Cold Call additions */
 .transcript .turn.buyer::before { color: var(--muted); }
 .exercise { border-left-color: var(--icy-deep); }
+.page.dark a[href^="http"] { color: var(--icy); }
