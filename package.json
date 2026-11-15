@@ -17,7 +17,8 @@
     "build:cold-email-checklist": "node scripts/build-cold-email-checklist.mjs",
     "test:commerce": "node scripts/test-commerce.mjs",
     "typecheck": "tsc --noEmit",
-    "test:playbooks": "node scripts/test-playbooks.mjs"
+    "test:playbooks": "node scripts/test-playbooks.mjs",
+    "build:master-interviews": "node scripts/northmark-press/master-interviews/build.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1167.0",

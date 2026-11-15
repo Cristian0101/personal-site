@@ -43,3 +43,6 @@ next-env.d.ts
 
 # local visual QA
 /output/
+
+# Northmark Press private production workspace (paid manuscripts and PDFs — never commit)
+/private-work/
