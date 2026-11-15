@@ -193,9 +193,9 @@ ul.checklist li::before { content: ""; position: absolute; left: 0; top: 2.6pt; 
 .compare .email::before, .example .email::before, .jd .email::before { display: none; }
 .email p { font-size: 8.8pt; line-height: 1.46; margin: 0 0 4.5pt; hyphens: manual; }
 .email .em-meta { font-size: 7pt; color: var(--muted); margin-bottom: 2pt; }
-.email .em-meta span, .jd .em-meta span { display: inline-block; min-width: 0.5in; font-size: 6pt; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.email .em-meta span, .jd .em-meta span { display: inline-block; min-width: 0.5in; margin-right: 5pt; font-size: 6pt; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
 .email .em-subject, .jd .em-subject { font-weight: 600; color: var(--ink); padding-bottom: 4pt; margin-bottom: 6pt !important; border-bottom: 0.6pt solid var(--rule); }
-.email .em-subject::before, .jd .em-subject::before { content: "Subject"; display: inline-block; min-width: 0.5in; font-size: 6pt; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.email .em-subject::before, .jd .em-subject::before { content: "Subject"; display: inline-block; min-width: 0.5in; margin-right: 5pt; font-size: 6pt; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
 .email .em-sign { margin-top: 5pt; }
 .compare .email { margin: 4pt 0 6pt; padding: 6pt 9pt 3pt; border-top-width: 0.8pt; }
 .compare .email p { font-size: 8.2pt; }
