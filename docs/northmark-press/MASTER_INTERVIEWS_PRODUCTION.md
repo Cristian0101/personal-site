@@ -44,6 +44,9 @@ Outputs (all private): `build/Master-Interviews[-PROOF].pdf`, `build/book.html` 
 
 The approved flat front cover is not in this repository; only `public/playbooks/master-interviews/mockup.webp` (a photographed hardcover presentation mockup) exists. The cover must not be recreated or approximated. Supply the original flat artwork (and editable source if available) and pass it with `--cover`.
 
+### Provisional cover
+Cristian confirmed (2026-11-15) that no flat original exists and approved a provisional cover derived from the mockup: the front board is cropped from `mockup.webp`, the photographed hinge trimmed, plain background extended to 3:4, and upscaled to 2250 × 3000 without changing any design element. It lives in the private workspace (`cover/`). Proof builds can label it with `--cover-note "…"`. Its true detail is about 116 ppi at full page, so a re-export from the original design tool is still preferable.
+
 ## Launch gates (unchanged)
 
 This pipeline does not touch `src/lib/playbooks.ts` commerce flags. `purchaseEnabled`, `finalPdfApproved`, `price.approved`, and `status` stay as they are until Cristian approves the final edition and the sandbox flow in `docs/PLAYBOOK_COMMERCE.md` has passed end to end.

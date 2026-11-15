@@ -10,7 +10,9 @@
  *
  * --proof  allows [[FLAG: …]] markers (highlighted) and the reserved cover slot.
  *          Without --proof the build fails if flags remain or no approved cover is supplied.
- * --cover  approved FLAT front-cover artwork (3:4). Never pass a mockup photo or a recreation.
+ * --cover  approved FLAT front-cover artwork (3:4). Never pass a mockup photo or a recreation
+ *          unless Cristian has explicitly approved that source (see docs, "Provisional cover").
+ * --cover-note "text"  proof-only label shown on page 1.
  */
 import { chromium } from 'playwright';
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
@@ -24,6 +26,8 @@ const root = path.resolve(here, '../../..');
 const args = process.argv.slice(2);
 const proof = args.includes('--proof');
 const coverArg = args.includes('--cover') ? args[args.indexOf('--cover') + 1] : null;
+// --cover-note "text": small proof-only label on page 1 (e.g. to mark a provisional cover)
+const coverNote = args.includes('--cover-note') ? args[args.indexOf('--cover-note') + 1] : null;
 const ws = path.join(root, 'private-work/northmark-press/master-interviews');
 const manuscriptDir = args.includes('--manuscript') ? path.resolve(args[args.indexOf('--manuscript') + 1]) : path.join(ws, 'manuscript');
 const buildDir = path.join(ws, 'build');
@@ -44,7 +48,7 @@ let coverHtml;
 if (coverArg) {
   const coverPath = path.resolve(coverArg);
   if (!existsSync(coverPath)) throw new Error(`Cover not found: ${coverPath}`);
-  coverHtml = `<section class="page cover" data-page="1" data-type="cover"><img class="cover-art" src="${pathToFileURL(coverPath)}" alt="Master Interviews front cover"></section>`;
+  coverHtml = `<section class="page cover" data-page="1" data-type="cover"><img class="cover-art" src="${pathToFileURL(coverPath)}" alt="Master Interviews front cover">${proof && coverNote ? `<div class="cover-note">${coverNote.replace(/</g, '&lt;')}</div>` : ''}</section>`;
 } else {
   if (!proof) throw new Error('No approved flat cover supplied. Use --cover <file>, or --proof for an internal proof.');
   coverHtml = `<section class="page cover" data-page="1" data-type="cover"><div class="cover-slot"><p class="slot-label">Production proof · page 1 reserved</p><p>The approved flat Master Interviews front cover is inserted here at final production. It is not recreated or approximated in this proof.</p></div></section>`;

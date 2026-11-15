@@ -184,3 +184,4 @@ ul.checklist li::before { content: ""; position: absolute; left: 0; top: 2.6pt; 
 
 .example[data-kind="card"]::before { content: "Practice card"; }
 .page a[href^="http"] { color: var(--icy-deep); border-bottom: 0.5pt solid currentColor; }
+.cover-note { position: absolute; left: 0.25in; bottom: 0.2in; padding: 3pt 6pt; background: rgba(255, 242, 184, .92); color: #5b4300; font-size: 6.5pt; letter-spacing: .08em; text-transform: uppercase; }
