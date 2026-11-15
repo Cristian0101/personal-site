@@ -6,6 +6,7 @@ import { PremiumCollection } from "@/components/playbooks/PremiumCollection";
 import { playbooks, playbookPath } from "@/lib/playbooks";
 
 export const metadata = resourceMetadata("Resources", "Five free tech sales tools, plus deeper digital playbooks from Northmark Press. Interview preparation, daily planning, and deliberate sales practice.", "/resources");
+export const dynamic = "force-dynamic";
 
 export default function ResourcesPage() {
   const schema = graphSchema(personSchema, {

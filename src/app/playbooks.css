@@ -9,7 +9,7 @@
 .book-breadcrumb > span { font-size: 10px; letter-spacing: .05em; }
 .book-breadcrumb > span span { padding: 0 9px; color: var(--dim); }
 .book-hero { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 48px; padding: 56px 0 64px; }
-.book-hero__visual { margin: 0; min-width: 0; }
+.book-hero__visual { margin: 0 auto; min-width: 0; width: min(100%, 420px); }
 .book-hero__visual img { display: block; width: 100%; height: auto; }
 .book-hero__visual figcaption { margin-top: 16px; text-align: center; color: var(--muted); font: 10px/1.6 var(--font-sans); }
 .book-hero__visual figcaption span { padding: 0 3px; }
@@ -141,8 +141,8 @@
 /* The collection uses one card at every size; product detail layouts are unchanged. */
 .premium-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 24px; }
 .premium-grid .premium-listing { display: flex; flex-direction: column; align-items: stretch; min-width: 0; border: 1px solid var(--line); }
-.premium-grid .premium-listing__image { position: relative; flex-shrink: 0; aspect-ratio: 1.5; border-bottom: 1px solid var(--line); }
-.premium-grid .premium-listing__image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.premium-grid .premium-listing__image { position: relative; flex-shrink: 0; aspect-ratio: 1.05; border-bottom: 1px solid var(--line); background: var(--surface); }
+.premium-grid .premium-listing__image img { position: absolute; inset: 8% 0; width: 100%; height: 84%; object-fit: contain; filter: drop-shadow(0 8px 14px #0003); }
 .premium-grid .premium-listing__copy { display: flex; flex: 1; flex-direction: column; padding: 23px; }
 .premium-grid .premium-listing__copy h3 { font-size: 30px; min-height: 2.2em; margin: 15px 0; text-wrap: balance; }
 .premium-grid .premium-listing__copy > p:not(.book-eyebrow) { font-size: .94em; }
@@ -200,31 +200,4 @@
   .book-hero__visual img, .premium-listing__bottom a span, .book-button > span { transition: none; }
   .premium-grid .premium-listing:is(:hover, :focus-within), .book-hero__visual:hover img,
   .premium-listing__bottom a:is(:hover, :focus-visible) span, .book-button:is(:hover, :focus-visible) > span { transform: none; }
-}
-
-/* A light layer follows the photographed front cover and spine, leaving the studio backdrop clear. */
-.book-hero__artwork { position: relative; isolation: isolate; }
-.book-hero__artwork::after, .premium-grid .premium-listing__image::before {
-  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    radial-gradient(ellipse at 71% 76%, color-mix(in srgb, var(--book-accent) 80%, transparent), transparent 48%),
-    linear-gradient(125deg, transparent 24%, color-mix(in srgb, var(--book-accent) 40%, transparent) 53%, transparent 78%);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 668'%3E%3Crect x='239' y='29' width='60' height='583' rx='8' fill='white'/%3E%3Crect x='326' y='29' width='436' height='583' rx='4' fill='white'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mix-blend-mode: screen; opacity: .18;
-  transition: opacity 500ms ease, background-position 700ms cubic-bezier(.22,1,.36,1);
-  background-size: 115% 115%, 160% 100%; background-position: 50% 50%, 0% 50%;
-}
-.book-hero__artwork { transition: transform 500ms cubic-bezier(.22,1,.36,1); }
-/* Move the light together with the image. */
-.book-hero__visual img { transition: filter 500ms ease; }
-.premium-grid .premium-listing:focus-within .premium-listing__image::before { opacity: .42; background-position: 50% 50%, 100% 50%; }
-@media (hover: hover) and (pointer: fine) {
-  .book-hero__visual:hover img { transform: none; }
-  .book-hero__visual:hover .book-hero__artwork { transform: translateY(-4px); }
-  .book-hero__visual:hover .book-hero__artwork::after,
-  .premium-grid .premium-listing:hover .premium-listing__image::before { opacity: .42; background-position: 50% 50%, 100% 50%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .book-hero__artwork, .book-hero__artwork::after, .premium-grid .premium-listing__image::before { transition: none; }
-  .book-hero__visual:hover .book-hero__artwork { transform: none; }
 }

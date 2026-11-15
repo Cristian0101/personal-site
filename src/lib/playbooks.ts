@@ -38,8 +38,8 @@ export const playbooks: Playbook[] = [{
   shortDescription: "A complete preparation process for your next SDR or BDR interview.",
   description: "Stop walking into tech sales interviews hoping you've prepared enough. Build a company-specific interview strategy, prepare stronger answers from your real experiences, and practice the conversations that matter before interview day.",
   cover: {
-    src: "/playbooks/master-interviews/mockup.webp", width: 2172, height: 1452,
-    alt: "Approved Master Interviews hardcover mockup, showing the charcoal cover and full spine with icy-blue lettering. The product is a digital playbook.",
+    src: "/playbooks/master-interviews/cover.webp", width: 1200, height: 1600,
+    alt: "Cover of the Master Interviews digital playbook.",
   },
   accent: "#a9cce5",
   price: { amount: 3900, currency: "usd", approved: false },
@@ -106,10 +106,10 @@ export const playbooks: Playbook[] = [{
   "accent": "#f47721",
   "accentBorder": "#873b17",
   "cover": {
-    "src": "/playbooks/sdr-bdr-job-mastery/mockup.webp",
-    "width": 2150,
-    "height": 1436,
-    "alt": "Approved SDR/BDR Job Mastery hardcover mockup showing the full cover and spine. The product is a digital playbook."
+    "src": "/playbooks/sdr-bdr-job-mastery/cover.webp",
+    "width": 1200,
+    "height": 1600,
+    "alt": "Cover of the SDR/BDR Job Mastery digital playbook."
   },
   "checkoutPriceEnv": "SDR_BDR_JOB_MASTERY_STRIPE_PRICE_ID",
   "fileKeyEnv": "SDR_BDR_JOB_MASTERY_FILE_KEY",
@@ -202,10 +202,10 @@ export const playbooks: Playbook[] = [{
   "accent": "#c17af1",
   "accentBorder": "#8150a7",
   "cover": {
-    "src": "/playbooks/break-up-your-tam/mockup.webp",
-    "width": 2182,
-    "height": 1452,
-    "alt": "Approved Break Up Your TAM hardcover mockup showing the full cover and spine. The product is a digital playbook."
+    "src": "/playbooks/break-up-your-tam/cover.webp",
+    "width": 1200,
+    "height": 1600,
+    "alt": "Cover of the Break Up Your TAM digital playbook."
   },
   "checkoutPriceEnv": "BREAK_UP_YOUR_TAM_STRIPE_PRICE_ID",
   "fileKeyEnv": "BREAK_UP_YOUR_TAM_FILE_KEY",
@@ -283,8 +283,8 @@ export const playbooks: Playbook[] = [{
   shortDescription: "A systematic approach to opening calls, creating relevance, and earning the next step.",
   description: "Cold calling isn't about memorizing the perfect script. It's about understanding how conversations work. Learn how to open calls, create relevance, navigate objections, and confidently ask for the next step using a repeatable prospecting framework.",
   cover: {
-    src: "/playbooks/science-of-a-cold-call/mockup.webp", width: 2182, height: 1456,
-    alt: "Approved The Science of a Cold Call hardcover mockup, showing the full deep-navy cover and spine with electric-cyan lettering. The product is a digital playbook.",
+    src: "/playbooks/science-of-a-cold-call/cover.webp", width: 1200, height: 1600,
+    alt: "Cover of The Science of a Cold Call digital playbook.",
   },
   accent: "#1be2f6",
   accentBorder: "#1164c8",
@@ -333,8 +333,8 @@ export const playbooks: Playbook[] = [{
   shortDescription: "A practical framework for researching prospects, writing relevant emails, and following up with purpose.",
   description: "Stop treating cold email like a numbers game. Learn how to research prospects, write relevant messages, communicate value clearly, and develop thoughtful follow-up sequences without relying on generic templates.",
   cover: {
-    src: "/playbooks/science-of-a-cold-email/mockup.webp", width: 1546, height: 1024,
-    alt: "Approved The Science of a Cold Email hardcover mockup, showing the full forest-green cover and spine with electric-lime lettering. The product is a digital playbook.",
+    src: "/playbooks/science-of-a-cold-email/cover.webp", width: 1200, height: 1600,
+    alt: "Cover of The Science of a Cold Email digital playbook.",
   },
   accent: "#badd49",
   accentBorder: "#126b48",

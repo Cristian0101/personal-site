@@ -10,11 +10,11 @@ const browser = await chromium.launch();
 let checks = 0;
 const ok = (value, message) => { assert.ok(value, message); checks++; };
 const books = [
-  { slug: 'master-interviews', title: 'Master Interviews', width: 2172, height: 1452, free: '/resources/interview-prep-scorecard', label: '' },
-  { slug: 'sdr-bdr-job-mastery', title: 'SDR/BDR Job Mastery', width: 2150, height: 1436, free: '/resources/sdr-bdr-daily-checklist', label: 'job-' },
-  { slug: 'break-up-your-tam', title: 'Break Up Your TAM', width: 2182, height: 1452, free: '/resources/tam-segmentation-worksheet', label: 'tam-' },
-  { slug: 'science-of-a-cold-call', title: 'The Science of a Cold Call', width: 2182, height: 1456, free: '/resources/cold-call-practice-scorecard', label: 'call-' },
-  { slug: 'science-of-a-cold-email', title: 'The Science of a Cold Email', width: 1546, height: 1024, free: '/resources/cold-email-teardown-checklist', label: 'email-' },
+  { slug: 'master-interviews', title: 'Master Interviews', width: 1200, height: 1600, free: '/resources/interview-prep-scorecard', label: '' },
+  { slug: 'sdr-bdr-job-mastery', title: 'SDR/BDR Job Mastery', width: 1200, height: 1600, free: '/resources/sdr-bdr-daily-checklist', label: 'job-' },
+  { slug: 'break-up-your-tam', title: 'Break Up Your TAM', width: 1200, height: 1600, free: '/resources/tam-segmentation-worksheet', label: 'tam-' },
+  { slug: 'science-of-a-cold-call', title: 'The Science of a Cold Call', width: 1200, height: 1600, free: '/resources/cold-call-practice-scorecard', label: 'call-' },
+  { slug: 'science-of-a-cold-email', title: 'The Science of a Cold Email', width: 1200, height: 1600, free: '/resources/cold-email-teardown-checklist', label: 'email-' },
 ];
 try {
   for (const book of books) for (const width of [390, 768, 1440]) for (const theme of ['light', 'dark']) {
@@ -38,7 +38,7 @@ try {
     ok(await page.getByRole('button', { name: /Get the Playbook/ }).count() === 0);
     ok(await page.locator('#preview-heading').count() === 0);
     ok(await page.locator('link[rel="canonical"]').getAttribute('href') === 'https://www.cristiansanchezaguilera.com/resources/' + book.slug);
-    ok((await page.locator('meta[property="og:image"]').getAttribute('content')).endsWith('/playbooks/' + book.slug + '/mockup.webp'));
+    ok((await page.locator('meta[property="og:image"]').getAttribute('content')).endsWith('/playbooks/' + book.slug + '/cover.webp'));
     const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
     ok(schema['@type'] === 'Product' && schema.name === book.title && !schema.offers && !schema.aggregateRating);
     ok(viewSlugs.includes(book.slug), 'Product-specific view event');
