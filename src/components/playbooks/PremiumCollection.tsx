@@ -2,17 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { formatPrice, playbookPath, playbooks, type Playbook } from "@/lib/playbooks";
+import { polarCheckoutUrl } from "@/lib/commerce/polar";
 
 function PlaybookCard({ book, priority }: { book: Playbook; priority: boolean }) {
+  const available = Boolean(polarCheckoutUrl(book));
   return <article className="premium-listing" style={{ "--book-accent": book.accent } as CSSProperties}>
     <Link href={playbookPath(book)} className="premium-listing__image" aria-label={`Explore ${book.title}`}>
       <Image {...book.cover} alt={book.cover.alt} sizes="(max-width: 620px) 100vw, (max-width: 1000px) 50vw, 33vw" quality={92} loading={priority ? "eager" : "lazy"} />
     </Link>
     <div className="premium-listing__copy">
-      <p className="book-eyebrow">Digital playbook <span aria-hidden="true">/</span> {book.status === "preparation" ? "In preparation" : "Northmark Press"}</p>
+      <p className="book-eyebrow">Digital playbook <span aria-hidden="true">/</span> {available ? "Northmark Press" : "In preparation"}</p>
       <h3><Link href={playbookPath(book)}>{book.title}</Link></h3>
       <p>{book.shortDescription}</p>
-      <div className="premium-listing__bottom"><span>{formatPrice(book)} <small>{book.price.approved ? "one-time" : "proposed · one-time"}</small></span><Link href={playbookPath(book)}>Explore playbook <span aria-hidden="true">↗</span></Link></div>
+      <div className="premium-listing__bottom"><span>{formatPrice(book)} <small>{available ? "one-time" : "proposed · one-time"}</small></span><Link href={playbookPath(book)}>Explore playbook <span aria-hidden="true">↗</span></Link></div>
     </div>
   </article>;
 }
